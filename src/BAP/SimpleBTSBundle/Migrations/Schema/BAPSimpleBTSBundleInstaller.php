@@ -34,6 +34,8 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $this->createBtsIssueTable($schema);
         $this->createBtsIssue2CollaboratorTable($schema);
         $this->createBtsIssue2IssueTable($schema);
+        $this->createBtsIssuePriorityTable($schema);
+        $this->createBtsIssueResolutionTable($schema);
 
         /** Foreign keys generation **/
         $this->addBtsIssueForeignKeys($schema);
@@ -61,6 +63,8 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $table->addColumn('type', 'string', ['length' => 50]);
         $table->addColumn('createdAt', 'datetime', []);
         $table->addColumn('updatedAt', 'datetime', []);
+        $table->addColumn('resolution_id', 'integer', ['notnull' => false]);
+        $table->addColumn('priority_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['reporter_id'], 'IDX_48518651E1CFE6F5', []);
         $table->addIndex(['assignee_id'], 'IDX_4851865159EC7D60', []);
@@ -69,6 +73,35 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $table->addIndex(['createdAt'], 'bts_issue_created_at_idx', []);
         $table->addIndex(['summary'], 'bts_issue_summary_idx', []);
         $table->addIndex(['code'], 'bts_issue_code_idx', []);
+        $table->addIndex(['priority_id'], 'IDX_48518651497B19F9', []);
+        $table->addIndex(['resolution_id'], 'IDX_4851865112A1C43A', []);
+    }
+
+    /**
+     * Create bts_issue_priority table
+     *
+     * @param Schema $schema
+     */
+    protected function createBtsIssuePriorityTable(Schema $schema)
+    {
+        $table = $schema->createTable('bts_issue_priority');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('name', 'string', ['length' => 30]);
+        $table->addColumn('sort_order', 'integer', []);
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * Create bts_issue_resolution table
+     *
+     * @param Schema $schema
+     */
+    protected function createBtsIssueResolutionTable(Schema $schema)
+    {
+        $table = $schema->createTable('bts_issue_resolution');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('name', 'string', ['length' => 30]);
+        $table->setPrimaryKey(['id']);
     }
 
     /**
@@ -109,6 +142,18 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
     protected function addBtsIssueForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('bts_issue');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('bts_issue_resolution'),
+            ['resolution_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('bts_issue_priority'),
+            ['priority_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
         $table->addForeignKeyConstraint(
             $schema->getTable('bts_issue'),
             ['parent_id'],
