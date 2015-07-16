@@ -3,28 +3,15 @@
 namespace BAP\SimpleBTSBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInterface
+class BAPSimpleBTSBundle implements Migration
 {
-    /** @var NoteExtension */
-    protected $noteExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion()
-    {
-        return 'v1_1';
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -39,8 +26,6 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $this->addBtsIssueForeignKeys($schema);
         $this->addBtsIssue2CollaboratorForeignKeys($schema);
         $this->addBtsIssue2IssueForeignKeys($schema);
-
-        $this->noteExtension->addNoteAssociation($schema, 'bts_issue');
     }
 
     /**
@@ -171,13 +156,5 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNoteExtension(NoteExtension $noteExtension)
-    {
-        $this->noteExtension = $noteExtension;
     }
 }

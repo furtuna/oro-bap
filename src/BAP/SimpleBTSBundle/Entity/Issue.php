@@ -166,7 +166,6 @@ class Issue extends ExtendIssue implements Taggable
      */
     protected $updatedAt;
 
-
     public function __construct()
     {
         parent::__construct();
@@ -271,7 +270,7 @@ class Issue extends ExtendIssue implements Taggable
             self::TYPE_SUBTASK,
             self::TYPE_TASK
         ])) {
-            throw new \InvalidArgumentException('Invalid issue type.');
+            throw new \InvalidArgumentException('Invalid issue type: "' . $type . '"');
         }
 
         $this->type = $type;
@@ -302,7 +301,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Returns the collection of tags for this Taggable entity
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection|Tag[]
      */
     public function getTags()
     {
@@ -312,7 +311,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Set tag collection
      *
-     * @param $tags
+     * @param ArrayCollection|Tag[] $tags
      * @return $this
      */
     public function setTags($tags)
@@ -334,7 +333,7 @@ class Issue extends ExtendIssue implements Taggable
      * @param User $assignee
      * @return $this
      */
-    public function setAssignee($assignee)
+    public function setAssignee(User $assignee)
     {
         $this->assignee = $assignee;
 
@@ -353,7 +352,7 @@ class Issue extends ExtendIssue implements Taggable
      * @param User $reporter
      * @return $this
      */
-    public function setReporter($reporter)
+    public function setReporter(User $reporter)
     {
         $this->reporter = $reporter;
 
@@ -366,7 +365,7 @@ class Issue extends ExtendIssue implements Taggable
      * @param \DateTime $createdAt
      * @return Issue
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -389,7 +388,7 @@ class Issue extends ExtendIssue implements Taggable
      * @param \DateTime $updatedAt
      * @return Issue
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
@@ -409,12 +408,12 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Add relatedIssues
      *
-     * @param Issue $relatedIssues
+     * @param Issue $relatedIssue
      * @return Issue
      */
-    public function addRelatedIssue(Issue $relatedIssues)
+    public function addRelatedIssue(Issue $relatedIssue)
     {
-        $this->relatedIssues[] = $relatedIssues;
+        $this->relatedIssues[] = $relatedIssue;
 
         return $this;
     }
@@ -422,11 +421,11 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Remove relatedIssues
      *
-     * @param Issue $relatedIssues
+     * @param Issue $relatedIssue
      */
-    public function removeRelatedIssue(Issue $relatedIssues)
+    public function removeRelatedIssue(Issue $relatedIssue)
     {
-        $this->relatedIssues->removeElement($relatedIssues);
+        $this->relatedIssues->removeElement($relatedIssue);
     }
 
     /**
@@ -442,12 +441,12 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Add relatedToIssues
      *
-     * @param Issue $relatedToIssues
+     * @param Issue $relatedToIssue
      * @return Issue
      */
-    public function addRelatedToIssue(Issue $relatedToIssues)
+    public function addRelatedToIssue(Issue $relatedToIssue)
     {
-        $this->relatedToIssues[] = $relatedToIssues;
+        $this->relatedToIssues[] = $relatedToIssue;
 
         return $this;
     }
@@ -455,11 +454,11 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Remove relatedToIssues
      *
-     * @param Issue $relatedToIssues
+     * @param Issue $relatedToIssue
      */
-    public function removeRelatedToIssue(Issue $relatedToIssues)
+    public function removeRelatedToIssue(Issue $relatedToIssue)
     {
-        $this->relatedToIssues->removeElement($relatedToIssues);
+        $this->relatedToIssues->removeElement($relatedToIssue);
     }
 
     /**
@@ -475,12 +474,12 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Add collaborators
      *
-     * @param User $collaborators
+     * @param User $collaborator
      * @return Issue
      */
-    public function addCollaborator(User $collaborators)
+    public function addCollaborator(User $collaborator)
     {
-        $this->collaborators[] = $collaborators;
+        $this->collaborators[] = $collaborator;
 
         return $this;
     }
@@ -488,11 +487,11 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Remove collaborators
      *
-     * @param User $collaborators
+     * @param User $collaborator
      */
-    public function removeCollaborator(User $collaborators)
+    public function removeCollaborator(User $collaborator)
     {
-        $this->collaborators->removeElement($collaborators);
+        $this->collaborators->removeElement($collaborator);
     }
 
     /**
@@ -531,12 +530,12 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Add children
      *
-     * @param Issue $children
+     * @param Issue $child
      * @return Issue
      */
-    public function addChild(Issue $children)
+    public function addChild(Issue $child)
     {
-        $this->children[] = $children;
+        $this->children[] = $child;
 
         return $this;
     }
@@ -544,11 +543,11 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Remove children
      *
-     * @param Issue $children
+     * @param Issue $child
      */
-    public function removeChild(Issue $children)
+    public function removeChild(Issue $child)
     {
-        $this->children->removeElement($children);
+        $this->children->removeElement($child);
     }
 
     /**
