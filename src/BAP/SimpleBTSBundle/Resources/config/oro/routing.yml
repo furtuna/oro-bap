@@ -1,0 +1,3 @@
+bap_simple_bts_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: BAPSimpleBTSBundle:Default:index }
