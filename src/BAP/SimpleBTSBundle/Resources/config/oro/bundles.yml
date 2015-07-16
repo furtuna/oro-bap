@@ -1,0 +1,2 @@
+bundles:
+    - { name: BAP\SimpleBTSBundle\BAPSimpleBTSBundle, priority: 20 }
