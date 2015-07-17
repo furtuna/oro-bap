@@ -83,6 +83,20 @@ class Issue extends ExtendIssue implements Taggable
     protected $tags;
 
     /**
+     * @var IssuePriority
+     *
+     * @ORM\ManyToOne(targetEntity="IssuePriority")
+     */
+    protected $priority;
+
+    /**
+     * @var IssueResolution
+     *
+     * @ORM\ManyToOne(targetEntity="IssueResolution")
+     */
+    protected $resolution;
+
+    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
@@ -180,7 +194,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -203,7 +217,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get summary
      *
-     * @return string 
+     * @return string
      */
     public function getSummary()
     {
@@ -226,7 +240,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -249,7 +263,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -281,7 +295,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -375,7 +389,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -398,7 +412,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -579,5 +593,51 @@ class Issue extends ExtendIssue implements Taggable
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Set priority
+     *
+     * @param IssuePriority $priority
+     * @return Issue
+     */
+    public function setPriority(IssuePriority $priority = null)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * Get priority
+     *
+     * @return IssuePriority
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * Set resolution
+     *
+     * @param IssueResolution $resolution
+     * @return Issue
+     */
+    public function setResolution(IssueResolution $resolution = null)
+    {
+        $this->resolution = $resolution;
+
+        return $this;
+    }
+
+    /**
+     * Get resolution
+     *
+     * @return IssueResolution
+     */
+    public function getResolution()
+    {
+        return $this->resolution;
     }
 }
