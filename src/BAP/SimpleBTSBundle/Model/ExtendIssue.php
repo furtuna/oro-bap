@@ -4,5 +4,7 @@ namespace BAP\SimpleBTSBundle\Model;
 
 class ExtendIssue
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 }

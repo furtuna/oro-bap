@@ -194,7 +194,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -217,7 +217,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get summary
      *
-     * @return string 
+     * @return string
      */
     public function getSummary()
     {
@@ -240,7 +240,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -263,7 +263,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -295,7 +295,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -389,7 +389,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -412,7 +412,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {

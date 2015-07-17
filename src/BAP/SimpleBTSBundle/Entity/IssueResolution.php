@@ -32,7 +32,7 @@ class IssueResolution
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -55,7 +55,7 @@ class IssueResolution
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
