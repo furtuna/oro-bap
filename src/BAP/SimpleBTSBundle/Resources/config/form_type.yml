@@ -1,0 +1,5 @@
+services:
+    bap_bts.form.type.issue:
+        class: BAP\SimpleBTSBundle\Form\Type\IssueType
+        tags:
+            - { name: form.type, alias: bts_issue }

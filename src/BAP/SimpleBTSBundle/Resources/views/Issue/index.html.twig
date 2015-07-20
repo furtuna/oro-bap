@@ -7,7 +7,7 @@
     {% if resource_granted('bap_bts.issue_view') %}
         <div class="btn-group">
             {{ UI.addButton({
-                'path': path('bap_bts.issue_index'),
+                'path': path('bap_bts.issue_create'),
                 'entity_label': 'bts.issue.label'|trans
             }) }}
         </div>

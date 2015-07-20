@@ -4,6 +4,7 @@ bts:
         plural.label: Issues
         code.label: Code
         summary.label: Summary
+        description.label: Description
         reporter.label: Reporter
         assignee.label: Assignee
         created.label: Created
