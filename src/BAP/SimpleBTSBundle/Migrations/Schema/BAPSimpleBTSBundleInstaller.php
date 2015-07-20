@@ -72,7 +72,7 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $table->addIndex(['updatedAt'], 'bts_issue_updated_at_idx', []);
         $table->addIndex(['createdAt'], 'bts_issue_created_at_idx', []);
         $table->addIndex(['summary'], 'bts_issue_summary_idx', []);
-        $table->addIndex(['code'], 'bts_issue_code_idx', []);
+        $table->addUniqueIndex(['code'], 'bts_issue_code_idx');
         $table->addIndex(['priority_id'], 'IDX_48518651497B19F9', []);
         $table->addIndex(['resolution_id'], 'IDX_4851865112A1C43A', []);
     }

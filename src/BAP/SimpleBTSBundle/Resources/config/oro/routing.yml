@@ -1,3 +1,4 @@
-bap_simple_bts_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: BAPSimpleBTSBundle:Default:index }
+bap_bts_bundle:
+    resource: "@BAPSimpleBTSBundle/Controller"
+    type: annotation
+    prefix: /bap-bts

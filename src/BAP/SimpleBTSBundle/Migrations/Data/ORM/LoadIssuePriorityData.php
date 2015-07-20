@@ -1,4 +1,5 @@
 <?php
+
 namespace BAP\SimpleBTSBundle\Migrations\Data\ORM;
 
 use BAP\SimpleBTSBundle\Entity\IssuePriority;
@@ -7,6 +8,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class LoadIssuePriorityData extends AbstractFixture
 {
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $priorities = [

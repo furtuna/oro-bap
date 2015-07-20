@@ -21,7 +21,8 @@ use Oro\Bundle\UserBundle\Entity\User;
  *     @ORM\Index(name="bts_issue_updated_at_idx", columns={"updatedAt"}),
  *     @ORM\Index(name="bts_issue_created_at_idx", columns={"createdAt"}),
  *     @ORM\Index(name="bts_issue_summary_idx", columns={"summary"}),
- *     @ORM\Index(name="bts_issue_code_idx", columns={"code"}),
+ * }, uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="bts_issue_code_idx", columns={"code"})
  * })
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="BAP\SimpleBTSBundle\Entity\Repository\IssueRepository")

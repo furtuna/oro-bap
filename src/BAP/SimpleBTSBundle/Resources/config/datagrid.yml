@@ -1,0 +1,148 @@
+datagrid:
+    issues-grid:
+        source:
+            acl_resource: bap_bts.issue_view
+            type: orm
+            query:
+                select:
+                    - i.id
+                    - i.code
+                    - i.summary
+                    - i.type
+                    - p.name as priorityName
+                    - r.name as resolutionName
+                    - rp.username as reporterName
+                    - a.username as assigneeName
+                    - i.createdAt
+                    - i.updatedAt
+                from:
+                    - { table: BAPSimpleBTSBundle:Issue, alias: i }
+                join:
+                    inner:
+                        - { join: i.priority, alias: p }
+                        - { join: i.reporter, alias: rp }
+                        - { join: i.assignee, alias: a }
+                    left:
+                        - { join: i.resolution, alias: r }
+        columns:
+            code:
+                label: bts.issue.code.label
+            summary:
+                label: bts.issue.summary.label
+            type:
+                label: bts.issue.type.label
+            priorityName:
+                label: bts.priority.name.label
+            resolutionName:
+                label: bts.resolution.name.label
+            reporterName:
+                label: bts.issue.reporter.label
+            assigneeName:
+                label: bts.issue.assignee.label
+            createdAt:
+                label: bts.issue.created.label
+                frontend_type: datetime
+            updatedAt:
+                label: bts.issue.updated.label
+                frontend_type: datetime
+        properties:
+            id: ~
+#            update_link:
+#                type: url
+#                route: bap_bts.issue_update
+#                params:
+#                    - id
+#            view_link:
+#                type: url
+#                route: bap_bts.isssue_view
+#                params:
+#                    - id
+#            delete_link:
+#                type: url
+#                route: inventory_api_delete_vehicle
+#                params:
+#                    - id
+
+        sorters:
+            columns:
+                code:
+                    data_name: i.code
+                summary:
+                    data_name: i.summary
+                type:
+                    data_name: i.type
+                priorityName:
+                    data_name: p.sortOrder
+                resolutionName:
+                    data_name: r.name
+                reporterName:
+                    data_name: rp.username
+                assigneeName:
+                    data_name: a.username
+                createdAt:
+                    data_name: i.createdAt
+                updatedAt:
+                    data_name: i.updatedAt
+            default:
+                updatedAt: DESC
+        filters:
+            columns:
+                code:
+                    type: string
+                    data_name: i.code
+                summary:
+                    type: string
+                    data_name: i.summary
+                type:
+                    type: choice
+                    data_name: i.type
+                    options:
+                        field_options:
+                            choices:
+                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_STORY":   bts.issue.type.story
+                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_TASK":    bts.issue.type.task
+                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_SUBTASK": bts.issue.type.subtask
+                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_BUG":     bts.issue.type.bug
+                priorityName:
+                    type: entity
+                    data_name: p
+                    enabled: true
+                    options:
+                        field_options:
+                            class: BAPSimpleBTSBundle:IssuePriority
+                            property: name
+                resolutionName:
+                    type: entity
+                    data_name: r
+                    enabled: true
+                    options:
+                        field_options:
+                            class: BAPSimpleBTSBundle:IssueResolution
+                            property: name
+                createdAt:
+                    type: datetime
+                    data_name: i.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: i.updatedAt
+
+#        actions:
+#            view:
+#                type:          navigate
+#                label:         View
+#                link:          view_link
+#                icon:          eye-open
+#                acl_resource:  inventory.vehicle_view
+#                rowAction:     true
+#            update:
+#                type:          navigate
+#                label:         Update
+#                link:          update_link
+#                icon:          edit
+#                acl_resource:  inventory.vehicle_update
+#            delete:
+#                type:          delete
+#                label:         Delete
+#                link:          delete_link
+#                icon:          trash
+#                acl_resource:  inventory.vehicle_delete
