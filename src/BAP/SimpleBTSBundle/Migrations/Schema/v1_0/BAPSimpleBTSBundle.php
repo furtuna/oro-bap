@@ -40,6 +40,7 @@ class BAPSimpleBTSBundle implements Migration
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
         $table->addColumn('assignee_id', 'integer', ['notnull' => false]);
         $table->addColumn('reporter_id', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('summary', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 10]);
         $table->addColumn('description', 'text', []);
@@ -48,6 +49,7 @@ class BAPSimpleBTSBundle implements Migration
         $table->addColumn('updatedAt', 'datetime', []);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['reporter_id'], 'IDX_48518651E1CFE6F5', []);
+        $table->addIndex(['organization_id'], 'bts_issue_organization_idx', []);
         $table->addIndex(['assignee_id'], 'IDX_4851865159EC7D60', []);
         $table->addIndex(['parent_id'], 'IDX_48518651727ACA70', []);
         $table->addIndex(['updatedAt'], 'bts_issue_updated_at_idx', []);
@@ -109,6 +111,12 @@ class BAPSimpleBTSBundle implements Migration
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['reporter_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

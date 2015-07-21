@@ -1,0 +1,19 @@
+oro_menu_config:
+    items:
+        bap_bts_tab:
+            label: 'bts.label'
+            uri:   '#'
+            extras:
+                position: 300
+        bap_bts_issues_link:
+            label: 'bts.issue.plural.label'
+            route: bap_bts.issue_index
+    tree:
+        application_menu:
+            children:
+                bap_bts_tab:
+                    children:
+                        bap_bts_issues_link: ~
+
+oro_titles:
+    bap_bts.issue_index: 'bts.issue.plural.label'

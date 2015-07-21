@@ -10,6 +10,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class LoadIssueData extends AbstractFixture
 {
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         /** @var ArrayCollection|User[] $users */
@@ -35,6 +38,7 @@ class LoadIssueData extends AbstractFixture
                 ->setDescription(str_repeat('Lorem ipsum dolor sit amet... ', 10))
                 ->setAssignee($user)
                 ->setReporter($user)
+                ->setOrganization($user->getOrganization())
                 ->setPriority($priority)
                 ->setResolution($resolution)
             ;
