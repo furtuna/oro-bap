@@ -5,25 +5,25 @@ datagrid:
             type: orm
             query:
                 select:
-                    - i.id
-                    - i.code
-                    - i.summary
-                    - i.type
-                    - p.name as priorityName
-                    - r.name as resolutionName
-                    - rp.username as reporterName
-                    - a.username as assigneeName
-                    - i.createdAt
-                    - i.updatedAt
+                    - issue.id
+                    - issue.code
+                    - issue.summary
+                    - issue.type
+                    - priority.name as priorityName
+                    - resolution.name as resolutionName
+                    - reporter.username as reporterName
+                    - assignee.username as assigneeName
+                    - issue.createdAt
+                    - issue.updatedAt
                 from:
-                    - { table: BAPSimpleBTSBundle:Issue, alias: i }
+                    - { table: BAPSimpleBTSBundle:Issue, alias: issue }
                 join:
                     inner:
-                        - { join: i.priority, alias: p }
-                        - { join: i.reporter, alias: rp }
-                        - { join: i.assignee, alias: a }
+                        - { join: issue.priority, alias: priority }
+                        - { join: issue.reporter, alias: reporter }
+                        - { join: issue.assignee, alias: assignee }
                     left:
-                        - { join: i.resolution, alias: r }
+                        - { join: issue.resolution, alias: resolution }
         columns:
             code:
                 label: bts.issue.code.label
@@ -66,36 +66,36 @@ datagrid:
         sorters:
             columns:
                 code:
-                    data_name: i.code
+                    data_name: issue.code
                 summary:
-                    data_name: i.summary
+                    data_name: issue.summary
                 type:
-                    data_name: i.type
+                    data_name: issue.type
                 priorityName:
-                    data_name: p.sortOrder
+                    data_name: priority.sortOrder
                 resolutionName:
-                    data_name: r.name
+                    data_name: resolution.name
                 reporterName:
-                    data_name: rp.username
+                    data_name: reporter.username
                 assigneeName:
-                    data_name: a.username
+                    data_name: assignee.username
                 createdAt:
-                    data_name: i.createdAt
+                    data_name: issue.createdAt
                 updatedAt:
-                    data_name: i.updatedAt
+                    data_name: issue.updatedAt
             default:
                 updatedAt: DESC
         filters:
             columns:
                 code:
                     type: string
-                    data_name: i.code
+                    data_name: issue.code
                 summary:
                     type: string
-                    data_name: i.summary
+                    data_name: issue.summary
                 type:
                     type: choice
-                    data_name: i.type
+                    data_name: issue.type
                     options:
                         field_options:
                             choices:
@@ -105,26 +105,24 @@ datagrid:
                                 "BAP\SimpleBTSBundle\Entity\Issue::TYPE_BUG":     bts.issue.type.bug
                 priorityName:
                     type: entity
-                    data_name: p
-                    enabled: true
+                    data_name: priority
                     options:
                         field_options:
                             class: BAPSimpleBTSBundle:IssuePriority
                             property: name
                 resolutionName:
                     type: entity
-                    data_name: r
-                    enabled: true
+                    data_name: resolution
                     options:
                         field_options:
                             class: BAPSimpleBTSBundle:IssueResolution
                             property: name
                 createdAt:
                     type: datetime
-                    data_name: i.createdAt
+                    data_name: issue.createdAt
                 updatedAt:
                     type: datetime
-                    data_name: i.updatedAt
+                    data_name: issue.updatedAt
 
 #        actions:
 #            view:

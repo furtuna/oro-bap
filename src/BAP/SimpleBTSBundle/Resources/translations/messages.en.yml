@@ -19,3 +19,5 @@ bts:
         name.label: Priority
     resolution:
         name.label: Resolution
+
+    label: Simple BTS
