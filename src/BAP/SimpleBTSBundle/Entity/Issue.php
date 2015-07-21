@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -20,8 +21,9 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @ORM\Table(name="bts_issue", indexes={
  *     @ORM\Index(name="bts_issue_updated_at_idx", columns={"updatedAt"}),
  *     @ORM\Index(name="bts_issue_created_at_idx", columns={"createdAt"}),
- *     @ORM\Index(name="bts_issue_summary_idx", columns={"summary"}),
- *     @ORM\Index(name="bts_issue_code_idx", columns={"code"}),
+ *     @ORM\Index(name="bts_issue_summary_idx", columns={"summary"})
+ * }, uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="bts_issue_code_idx", columns={"code"})
  * })
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="BAP\SimpleBTSBundle\Entity\Repository\IssueRepository")
@@ -29,6 +31,16 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-tasks"
+ *          },
+ *          "ownership"={
+ *              "owner_type"="USER",
+ *              "owner_field_name"="reporter",
+ *              "owner_column_name"="reporter_id",
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          },
+ *          "security"={
+ *              "type"="ACL"
  *          }
  *      }
  * )
@@ -103,6 +115,14 @@ class Issue extends ExtendIssue implements Taggable
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $reporter;
+
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
 
     /**
      * @var User
@@ -639,5 +659,28 @@ class Issue extends ExtendIssue implements Taggable
     public function getResolution()
     {
         return $this->resolution;
+    }
+
+    /**
+     * Set organization
+     *
+     * @param Organization $organization
+     * @return Issue
+     */
+    public function setOrganization(Organization $organization = null)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 }

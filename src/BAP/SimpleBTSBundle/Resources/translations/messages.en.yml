@@ -1,0 +1,22 @@
+bts:
+    issue:
+        label: Issue
+        plural.label: Issues
+        code.label: Code
+        summary.label: Summary
+        reporter.label: Reporter
+        assignee.label: Assignee
+        created.label: Created
+        updated.label: Updated
+        type:
+            label: Type
+            bug: Bug
+            story: Story
+            subtask: Subtask
+            task: Task
+    priority:
+        name.label: Priority
+    resolution:
+        name.label: Resolution
+
+    label: Simple BTS
