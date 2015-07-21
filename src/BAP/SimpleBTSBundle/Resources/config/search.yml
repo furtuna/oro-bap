@@ -1,0 +1,13 @@
+BAP\SimpleBTSBundle\Entity\Issue:
+    alias:                          bts_issue
+    title_fields:                   [summary]
+    route:
+        name:                       bap_bts.issue_view
+        parameters:
+            id:                     id
+    search_template:                BAPSimpleBTSBundle:Search:result.html.twig
+    fields:
+        -
+            name:                   summary
+            target_type:            text
+            target_fields:          [summary]

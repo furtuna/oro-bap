@@ -14,6 +14,7 @@ class LoadIssueResolutionData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $resolutions = [
+            'Unresolved',
             'Fixed',
             'Won\'t Fix',
             'Duplicate',

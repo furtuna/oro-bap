@@ -31,14 +31,23 @@ class IssueController extends RestController
         return $this->handleDeleteRequest($id);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getForm()
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFormHandler()
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getManager()
     {
         return $this->get('bap_bts.issue_manager.api');

@@ -339,6 +339,8 @@ class Issue extends ExtendIssue implements Taggable
      */
     public function getTags()
     {
+        $this->tags = $this->tags ?: new ArrayCollection();
+
         return $this->tags;
     }
 
@@ -389,6 +391,25 @@ class Issue extends ExtendIssue implements Taggable
     public function setReporter(User $reporter)
     {
         $this->reporter = $reporter;
+
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->getReporter();
+    }
+
+    /**
+     * @param User $owner
+     * @return $this
+     */
+    public function setOwner(User $owner)
+    {
+        $this->setReporter($owner);
 
         return $this;
     }

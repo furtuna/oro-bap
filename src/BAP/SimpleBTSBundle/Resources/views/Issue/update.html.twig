@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% if form.vars.value.id %}
     {% set formAction = path('bap_bts.issue_update', { 'id': form.vars.value.id }) %}
@@ -60,6 +60,7 @@
                 form_row(form.type, {'label': 'bts.issue.type.label'}),
                 form_row(form.priority, {'label': 'bts.priority.name.label'}),
                 form_row(form.assignee, {'label': 'bts.issue.assignee.label'}),
+                form_row(form.tags)
             ]
         }]
     }] %}

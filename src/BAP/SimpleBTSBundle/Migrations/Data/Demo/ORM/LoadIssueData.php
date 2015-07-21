@@ -32,7 +32,7 @@ class LoadIssueData extends AbstractFixture
 
             $issue = new Issue();
             $issue
-                ->setCode('TT-' . sprintf("%'.04d\n", $i))
+                ->setCode('TT-' . sprintf("%'.04d", $i))
                 ->setSummary('Test Summary ' . $i)
                 ->setType(Issue::TYPE_TASK)
                 ->setDescription(str_repeat('Lorem ipsum dolor sit amet... ', 10))

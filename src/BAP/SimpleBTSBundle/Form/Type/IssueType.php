@@ -9,6 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class IssueType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -31,6 +35,7 @@ class IssueType extends AbstractType
                 'class'     => 'Oro\Bundle\UserBundle\Entity\User',
                 'property'  => 'username',
             ])
+            ->add('tags', 'oro_tag_select', ['label' => 'oro.tag.entity_plural_label'])
         ;
     }
 

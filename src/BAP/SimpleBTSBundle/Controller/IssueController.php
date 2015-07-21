@@ -35,6 +35,23 @@ class IssueController extends Controller
     }
 
     /**
+     * @Route("/{id}", name="bap_bts.issue_view", requirements={"id"="\d+"})
+     * @Template
+     * @Acl(
+     *     id="bap_bts.issue_view",
+     *     type="entity",
+     *     class="BAPSimpleBTSBundle:Issue",
+     *     permission="VIEW"
+     * )
+     * @param Issue $issue
+     * @return array
+     */
+    public function viewAction(Issue $issue)
+    {
+        return ['issue' => $issue];
+    }
+
+    /**
      * @Route("/create", name="bap_bts.issue_create")
      * @Template("BAPSimpleBTSBundle:Issue:update.html.twig")
      * @Acl(
@@ -83,6 +100,7 @@ class IssueController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($issue);
             $entityManager->flush();
+            $this->get('oro_tag.tag.manager')->saveTagging($issue);
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 array(
