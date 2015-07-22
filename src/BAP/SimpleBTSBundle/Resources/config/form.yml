@@ -1,0 +1,17 @@
+services:
+    bap_bts.form.type.issue:
+        class: BAP\SimpleBTSBundle\Form\Type\IssueType
+        arguments:
+            - @bap_bts.form.event_subscriber.issue
+        tags:
+            - { name: form.type, alias: bts_issue }
+
+    bap_bts.form.type.related_issue:
+        class: BAP\SimpleBTSBundle\Form\Type\RelatedIssueType
+        tags:
+            - { name: form.type, alias: bts_related_issue }
+
+    bap_bts.form.event_subscriber.issue:
+        class: BAP\SimpleBTSBundle\Form\EventListener\IssueSubscriber
+        arguments:
+            - @doctrine.orm.entity_manager

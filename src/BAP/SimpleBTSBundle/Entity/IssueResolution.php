@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IssueResolution
 {
+    const TYPE_UNRESOLVED = 'Unresolved';
+
     /**
      * @var integer
      *

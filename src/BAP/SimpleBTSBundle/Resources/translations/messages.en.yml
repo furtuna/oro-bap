@@ -1,23 +1,28 @@
-bts:
-    issue:
-        label: Issue
-        plural.label: Issues
-        code.label: Code
-        summary.label: Summary
-        description.label: Description
-        reporter.label: Reporter
-        assignee.label: Assignee
-        created.label: Created
-        updated.label: Updated
-        type:
-            label: Type
-            bug: Bug
-            story: Story
-            subtask: Subtask
-            task: Task
-    priority:
-        name.label: Priority
-    resolution:
-        name.label: Resolution
-
-    label: Simple BTS
+bap:
+    simplebts:
+        label: Simple BTS
+        issue:
+            entity_label: Issue
+            entity_plural_label: Issues
+            id.label: Id
+            assignee.label: Assignee
+            children.label: Subtasks
+            code.label: Code
+            collaborators.label: Collaborators
+            organization.label: Organization
+            parent.label: Parent
+            priority.label:  Priority
+            resolution.label: Resolution
+            related_issues.label: Related Issues
+            related_to_issues.label: Related To
+            reporter.label: Reporter
+            summary.label: Summary
+            created.label: Created At
+            updated.label: Updated At
+            type:
+                label: Type
+                bug: Bug
+                story: Story
+                subtask: Subtask
+                task: Task
+            description.label: Description

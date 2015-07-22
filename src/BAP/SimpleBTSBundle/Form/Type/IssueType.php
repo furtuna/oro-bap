@@ -3,6 +3,8 @@
 namespace BAP\SimpleBTSBundle\Form\Type;
 
 use BAP\SimpleBTSBundle\Entity\Issue;
+use BAP\SimpleBTSBundle\Form\EventListener\IssueSubscriber;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -10,8 +12,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class IssueType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * @var IssueSubscriber
+     */
+    protected $issueSubscriber;
+
+    /**
+     * @param IssueSubscriber $issueSubscriber
+     */
+    public function __construct(IssueSubscriber $issueSubscriber)
+    {
+        $this->issueSubscriber = $issueSubscriber;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,26 +33,21 @@ class IssueType extends AbstractType
             ->add('code')
             ->add('summary')
             ->add('description')
-            ->add('type', 'choice', [
-                'choices' => [
-                    Issue::TYPE_STORY   => 'bts.issue.type.story',
-                    Issue::TYPE_TASK    => 'bts.issue.type.task',
-                    Issue::TYPE_SUBTASK => 'bts.issue.type.subtask',
-                    Issue::TYPE_BUG     => 'bts.issue.type.bug',
-                ],
-            ])
             ->add('priority', 'entity', [
                 'class'     => 'BAP\SimpleBTSBundle\Entity\IssuePriority',
                 'property'  => 'name',
             ])
-            ->add('assignee', 'entity', [
-                'class'     => 'Oro\Bundle\UserBundle\Entity\User',
-                'property'  => 'username',
+            ->add('assignee', 'oro_jqueryselect2_hidden', [
+                'autocomplete_alias' => 'users'
             ])
             ->add('tags', 'oro_tag_select', ['label' => 'oro.tag.entity_plural_label'])
+            ->addEventSubscriber($this->issueSubscriber)
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -46,6 +55,9 @@ class IssueType extends AbstractType
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'bts_issue';

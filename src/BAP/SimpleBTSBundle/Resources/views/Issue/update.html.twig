@@ -15,7 +15,7 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-tag',
             'dataId': form.vars.value.id,
-            'entity_label': 'bts.issue.label'|trans
+            'entity_label': 'bap.simplebts.issue.entity_label'|trans
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
@@ -35,12 +35,12 @@
         {% set breadcrumbs = {
             'entity':      form.vars.value,
             'indexPath':   path('bap_bts.issue_index'),
-            'indexLabel': 'bts.issue.plural.label'|trans,
+            'indexLabel': 'bap.simplebts.issue.entity_plural_label'|trans,
             'entityTitle': form.vars.value.code
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'bts.issue.label'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'bap.simplebts.issue.entity_label'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
@@ -54,12 +54,12 @@
         'subblocks': [{
             'title': '',
             'data': [
-                form_row(form.code, {'label': 'bts.issue.code.label'}),
-                form_row(form.summary, {'label': 'bts.issue.summary.label'}),
-                form_row(form.description, {'label': 'bts.issue.description.label'}),
-                form_row(form.type, {'label': 'bts.issue.type.label'}),
-                form_row(form.priority, {'label': 'bts.priority.name.label'}),
-                form_row(form.assignee, {'label': 'bts.issue.assignee.label'}),
+                form_row(form.code),
+                form_row(form.summary),
+                form_row(form.description),
+                form_row(form.type),
+                form_row(form.priority),
+                form_row(form.assignee),
                 form_row(form.tags)
             ]
         }]

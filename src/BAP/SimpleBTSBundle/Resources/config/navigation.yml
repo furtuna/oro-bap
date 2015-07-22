@@ -1,12 +1,10 @@
 oro_menu_config:
     items:
         bap_bts_tab:
-            label: 'bts.label'
+            label: bap.simplebts.label
             uri:   '#'
-            extras:
-                position: 300
         bap_bts_issues_link:
-            label: 'bts.issue.plural.label'
+            label: bap.simplebts.issue.entity_plural_label
             route: bap_bts.issue_index
     tree:
         application_menu:
@@ -16,4 +14,4 @@ oro_menu_config:
                         bap_bts_issues_link: ~
 
 oro_titles:
-    bap_bts.issue_index: 'bts.issue.plural.label'
+    bap_bts.issue_index: bap.simplebts.issue.entity_plural_label

@@ -26,24 +26,24 @@ datagrid:
                         - { join: issue.resolution, alias: resolution }
         columns:
             code:
-                label: bts.issue.code.label
+                label: bap.simplebts.issue.code.label
             summary:
-                label: bts.issue.summary.label
+                label: bap.simplebts.issue.summary.label
             type:
-                label: bts.issue.type.label
+                label: bap.simplebts.issue.type.label
             priorityName:
-                label: bts.priority.name.label
+                label: bap.simplebts.issue.priority.label
             resolutionName:
-                label: bts.resolution.name.label
+                label: bap.simplebts.issue.resolution.label
             reporterName:
-                label: bts.issue.reporter.label
+                label: bap.simplebts.issue.reporter.label
             assigneeName:
-                label: bts.issue.assignee.label
+                label: bap.simplebts.issue.assignee.label
             createdAt:
-                label: bts.issue.created.label
+                label: bap.simplebts.issue.created.label
                 frontend_type: datetime
             updatedAt:
-                label: bts.issue.updated.label
+                label: bap.simplebts.issue.updated.label
                 frontend_type: datetime
         properties:
             id: ~
@@ -98,10 +98,10 @@ datagrid:
                     options:
                         field_options:
                             choices:
-                                story:   bts.issue.type.story
-                                task:    bts.issue.type.task
-                                subtask: bts.issue.type.subtask
-                                bug:     bts.issue.type.bug
+                                story:   bap.simplebts.issue.type.story
+                                task:    bap.simplebts.issue.type.task
+                                subtask: bap.simplebts.issue.type.subtask
+                                bug:     bap.simplebts.issue.type.bug
                 priorityName:
                     type: entity
                     data_name: issue.priority
