@@ -3,33 +3,50 @@
 namespace BAP\SimpleBTSBundle\Migrations\Data\ORM;
 
 use BAP\SimpleBTSBundle\Entity\IssuePriority;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\TranslationBundle\DataFixtures\AbstractTranslatableEntityFixture;
 
-class LoadIssuePriorityData extends AbstractFixture
+class LoadIssuePriorityData extends AbstractTranslatableEntityFixture
 {
+    const PRIORITY_PREFIX = 'issue_priority';
+
     /**
-     * @param ObjectManager $manager
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    protected function loadEntities(ObjectManager $manager)
     {
         $priorities = [
-            0 => 'Blocker',
-            1 => 'Critical',
-            2 => 'Minor',
-            3 => 'Minimal',
+            0 => 'blocker',
+            1 => 'critical',
+            2 => 'minor',
+            3 => 'minimal',
         ];
 
-        foreach ($priorities as $order => $name) {
-            $priority = new IssuePriority();
-            $priority
-                ->setName($name)
-                ->setSortOrder($order)
-            ;
+        $priorityRepository = $manager->getRepository('BAPSimpleBTSBundle:IssuePriority');
+        $translationLocales = $this->getTranslationLocales();
 
-            $manager->persist($priority);
+        foreach ($translationLocales as $locale) {
+            foreach ($priorities as $order => $code) {
+                /** @var IssuePriority $priority */
+                $priority = $priorityRepository->findOneBy(['code' => $code]);
+                if (! $priority) {
+                    $priority = new IssuePriority();
+                    $priority
+                        ->setCode($code)
+                        ->setSortOrder($order)
+                    ;
+                }
+
+                $name = $this->translate($code, static::PRIORITY_PREFIX, $locale);
+                $priority
+                    ->setLocale($locale)
+                    ->setName($name)
+                ;
+
+                $manager->persist($priority);
+            }
+
+            $manager->flush();
         }
-
-        $manager->flush();
     }
 }

@@ -1,0 +1,22 @@
+BAP\SimpleBTSBundle\Entity\Issue:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 10
+        summary:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        description:
+            - Length:
+                max: 4000
+        type:
+            - NotBlank: ~
+        priority:
+            - NotBlank: ~
+        assignee:
+            - NotBlank: ~

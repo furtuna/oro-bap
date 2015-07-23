@@ -4,14 +4,20 @@ namespace BAP\SimpleBTSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
+
 /**
  * IssueResolution
  *
  * @ORM\Table(name="bts_issue_resolution")
+ * @Gedmo\TranslationEntity(class="BAP\SimpleBTSBundle\Entity\EntityTranslation")
  * @ORM\Entity
  */
-class IssueResolution
+class IssueResolution implements Translatable
 {
+    const CODE_UNRESOLVED = 'unresolved';
+
     /**
      * @var integer
      *
@@ -24,10 +30,22 @@ class IssueResolution
     /**
      * @var string
      *
+     * @ORM\Column(name="code", type="string", length=30)
+     */
+    protected $code;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=30)
+     * @Gedmo\Translatable
      */
     protected $name;
 
+    /**
+     * @Gedmo\Locale
+     */
+    protected $locale;
 
     /**
      * Get id
@@ -40,10 +58,33 @@ class IssueResolution
     }
 
     /**
+     * Set code
+     *
+     * @param $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
      * Set name
      *
      * @param string $name
-     * @return IssueResolution
+     * @return $this
      */
     public function setName($name)
     {
@@ -60,5 +101,28 @@ class IssueResolution
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return $this
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Returns locale code
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }

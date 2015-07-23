@@ -26,43 +26,42 @@ datagrid:
                         - { join: issue.resolution, alias: resolution }
         columns:
             code:
-                label: bts.issue.code.label
+                label: bap.simplebts.issue.code.label
             summary:
-                label: bts.issue.summary.label
+                label: bap.simplebts.issue.summary.label
             type:
-                label: bts.issue.type.label
+                label: bap.simplebts.issue.type.label
             priorityName:
-                label: bts.priority.name.label
+                label: bap.simplebts.issue.priority.label
             resolutionName:
-                label: bts.resolution.name.label
+                label: bap.simplebts.issue.resolution.label
             reporterName:
-                label: bts.issue.reporter.label
+                label: bap.simplebts.issue.reporter.label
             assigneeName:
-                label: bts.issue.assignee.label
+                label: bap.simplebts.issue.assignee.label
             createdAt:
-                label: bts.issue.created.label
+                label: bap.simplebts.issue.created.label
                 frontend_type: datetime
             updatedAt:
-                label: bts.issue.updated.label
+                label: bap.simplebts.issue.updated.label
                 frontend_type: datetime
         properties:
             id: ~
-#            update_link:
-#                type: url
-#                route: bap_bts.issue_update
-#                params:
-#                    - id
-#            view_link:
-#                type: url
-#                route: bap_bts.isssue_view
-#                params:
-#                    - id
-#            delete_link:
-#                type: url
-#                route: inventory_api_delete_vehicle
-#                params:
-#                    - id
-
+            update_link:
+                type: url
+                route: bap_bts.issue_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: bap_bts.issue_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: bap_bts_api_delete_issue
+                params:
+                    - id
         sorters:
             columns:
                 code:
@@ -99,20 +98,20 @@ datagrid:
                     options:
                         field_options:
                             choices:
-                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_STORY":   bts.issue.type.story
-                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_TASK":    bts.issue.type.task
-                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_SUBTASK": bts.issue.type.subtask
-                                "BAP\SimpleBTSBundle\Entity\Issue::TYPE_BUG":     bts.issue.type.bug
+                                story:   bap.simplebts.issue.type.story
+                                task:    bap.simplebts.issue.type.task
+                                subtask: bap.simplebts.issue.type.subtask
+                                bug:     bap.simplebts.issue.type.bug
                 priorityName:
                     type: entity
-                    data_name: priority
+                    data_name: issue.priority
                     options:
                         field_options:
                             class: BAPSimpleBTSBundle:IssuePriority
                             property: name
                 resolutionName:
                     type: entity
-                    data_name: resolution
+                    data_name: issue.resolution
                     options:
                         field_options:
                             class: BAPSimpleBTSBundle:IssueResolution
@@ -123,24 +122,23 @@ datagrid:
                 updatedAt:
                     type: datetime
                     data_name: issue.updatedAt
-
-#        actions:
-#            view:
-#                type:          navigate
-#                label:         View
-#                link:          view_link
-#                icon:          eye-open
-#                acl_resource:  inventory.vehicle_view
-#                rowAction:     true
-#            update:
-#                type:          navigate
-#                label:         Update
-#                link:          update_link
-#                icon:          edit
-#                acl_resource:  inventory.vehicle_update
-#            delete:
-#                type:          delete
-#                label:         Delete
-#                link:          delete_link
-#                icon:          trash
-#                acl_resource:  inventory.vehicle_delete
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  bap_bts.issue_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  bap_bts.issue_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  bap_bts.issue_delete
