@@ -4,7 +4,7 @@ namespace BAP\SimpleBTSBundle\Form\EventListener;
 
 use BAP\SimpleBTSBundle\Entity\Issue;
 use BAP\SimpleBTSBundle\Entity\IssueResolution;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,16 +12,16 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class IssueSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var EntityManager
+     * @var EntityRepository
      */
-    protected $entityManager;
+    protected $issueResolutionRepository;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityRepository $issueResolutionRepository
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityRepository $issueResolutionRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->issueResolutionRepository = $issueResolutionRepository;
     }
 
     /**
@@ -52,9 +52,9 @@ class IssueSubscriber implements EventSubscriberInterface
         $issue = $event->getData();
 
         if ($issue && $issue->getResolution() === null) {
-            $defaultResolution = $this->entityManager
-                ->getRepository('BAPSimpleBTSBundle:IssueResolution')
-                ->findOneBy(['name' => IssueResolution::TYPE_UNRESOLVED])
+            /** @var IssueResolution $defaultResolution */
+            $defaultResolution = $this->issueResolutionRepository
+                ->findOneBy(['code' => IssueResolution::CODE_UNRESOLVED])
             ;
 
             $issue->setResolution($defaultResolution);
@@ -80,6 +80,6 @@ class IssueSubscriber implements EventSubscriberInterface
             ];
         }
 
-        $form->add('type', 'choice', ['choices' => $choices]);
+        $form->add('type', 'genemu_jqueryselect2_choice', ['choices' => $choices]);
     }
 }

@@ -3,33 +3,51 @@
 namespace BAP\SimpleBTSBundle\Migrations\Data\ORM;
 
 use BAP\SimpleBTSBundle\Entity\IssueResolution;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\TranslationBundle\DataFixtures\AbstractTranslatableEntityFixture;
 
-class LoadIssueResolutionData extends AbstractFixture
+class LoadIssueResolutionData extends AbstractTranslatableEntityFixture
 {
+    const RESOLUTION_PREFIX = 'issue_resolution';
+
     /**
-     * @param ObjectManager $manager
+     * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    protected function loadEntities(ObjectManager $manager)
     {
         $resolutions = [
-            'Unresolved',
-            'Fixed',
-            'Won\'t Fix',
-            'Duplicate',
-            'Incomplete',
-            'Cannot Reproduce',
-            'Done',
-            'Won\'t Do',
+            'unresolved',
+            'fixed',
+            'wont_fix',
+            'duplicate',
+            'incomplete',
+            'cant_reproduce',
+            'done',
+            'wont_do',
         ];
 
-        foreach ($resolutions as $name) {
-            $resolution = new IssueResolution();
-            $resolution->setName($name);
-            $manager->persist($resolution);
-        }
+        $resolutionRepository = $manager->getRepository('BAPSimpleBTSBundle:IssueResolution');
+        $translationLocales = $this->getTranslationLocales();
 
-        $manager->flush();
+        foreach ($translationLocales as $locale) {
+            foreach ($resolutions as $code) {
+                /** @var IssueResolution $resolution */
+                $resolution = $resolutionRepository->findOneBy(['code' => $code]);
+                if (! $resolution) {
+                    $resolution = new IssueResolution();
+                    $resolution->setCode($code);
+                }
+
+                $name = $this->translate($code, static::RESOLUTION_PREFIX, $locale);
+                $resolution
+                    ->setLocale($locale)
+                    ->setName($name)
+                ;
+
+                $manager->persist($resolution);
+            }
+
+            $manager->flush();
+        }
     }
 }

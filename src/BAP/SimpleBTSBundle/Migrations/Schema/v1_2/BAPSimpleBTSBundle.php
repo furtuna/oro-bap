@@ -14,6 +14,7 @@ class BAPSimpleBTSBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
+        $this->createBtsEntityTranslationTable($schema);
         $this->createBtsIssuePriorityTable($schema);
         $this->createBtsIssueResolutionTable($schema);
         $this->updateBtsIssueTable($schema);
@@ -35,6 +36,24 @@ class BAPSimpleBTSBundle implements Migration
     }
 
     /**
+     * Generate table bts_entity_translation
+     *
+     * @param Schema $schema
+     */
+    protected function createBtsEntityTranslationTable(Schema $schema)
+    {
+        $table = $schema->createTable('bts_entity_translation');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('foreign_key', 'string', ['length' => 16]);
+        $table->addColumn('content', 'string', ['length' => 255]);
+        $table->addColumn('locale', 'string', ['length' => 8]);
+        $table->addColumn('object_class', 'string', ['length' => 255]);
+        $table->addColumn('field', 'string', ['length' => 32]);
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['locale', 'object_class', 'field', 'foreign_key'], 'bts_entity_translation_idx', []);
+    }
+
+    /**
      * Create bts_issue_priority table
      *
      * @param Schema $schema
@@ -43,6 +62,7 @@ class BAPSimpleBTSBundle implements Migration
     {
         $table = $schema->createTable('bts_issue_priority');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('code', 'string', ['length' => 30]);
         $table->addColumn('name', 'string', ['length' => 30]);
         $table->addColumn('sort_order', 'integer', []);
         $table->setPrimaryKey(['id']);
@@ -57,6 +77,7 @@ class BAPSimpleBTSBundle implements Migration
     {
         $table = $schema->createTable('bts_issue_resolution');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('code', 'string', ['length' => 30]);
         $table->addColumn('name', 'string', ['length' => 30]);
         $table->setPrimaryKey(['id']);
     }

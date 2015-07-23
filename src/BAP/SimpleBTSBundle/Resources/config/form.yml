@@ -14,4 +14,4 @@ services:
     bap_bts.form.event_subscriber.issue:
         class: BAP\SimpleBTSBundle\Form\EventListener\IssueSubscriber
         arguments:
-            - @doctrine.orm.entity_manager
+            - @bap_bts.issue_resolution_repository

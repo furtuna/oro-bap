@@ -16,8 +16,6 @@ use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Issue
- *
  * @ORM\Table(name="bts_issue", indexes={
  *     @ORM\Index(name="bts_issue_updated_at_idx", columns={"updatedAt"}),
  *     @ORM\Index(name="bts_issue_created_at_idx", columns={"createdAt"}),
@@ -225,7 +223,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set summary
      *
      * @param string $summary
-     * @return Issue
+     * @return $this
      */
     public function setSummary($summary)
     {
@@ -248,7 +246,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set code
      *
      * @param string $code
-     * @return Issue
+     * @return $this
      */
     public function setCode($code)
     {
@@ -271,7 +269,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set description
      *
      * @param string $description
-     * @return Issue
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -294,7 +292,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set type
      *
      * @param string $type
-     * @return Issue
+     * @return $this
      */
     public function setType($type)
     {
@@ -418,7 +416,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Issue
+     * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
@@ -441,7 +439,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Issue
+     * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt)
     {
@@ -464,7 +462,7 @@ class Issue extends ExtendIssue implements Taggable
      * Add relatedIssues
      *
      * @param Issue $relatedIssue
-     * @return Issue
+     * @return $this
      */
     public function addRelatedIssue(Issue $relatedIssue)
     {
@@ -497,7 +495,7 @@ class Issue extends ExtendIssue implements Taggable
      * Add relatedToIssues
      *
      * @param Issue $relatedToIssue
-     * @return Issue
+     * @return $this
      */
     public function addRelatedToIssue(Issue $relatedToIssue)
     {
@@ -530,7 +528,7 @@ class Issue extends ExtendIssue implements Taggable
      * Add collaborators
      *
      * @param User $collaborator
-     * @return Issue
+     * @return $this
      */
     public function addCollaborator(User $collaborator)
     {
@@ -563,7 +561,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set parent
      *
      * @param Issue $parent
-     * @return Issue
+     * @return $this
      */
     public function setParent(Issue $parent = null)
     {
@@ -575,7 +573,7 @@ class Issue extends ExtendIssue implements Taggable
     /**
      * Get parent
      *
-     * @return Issue
+     * @return $this
      */
     public function getParent()
     {
@@ -586,7 +584,7 @@ class Issue extends ExtendIssue implements Taggable
      * Add children
      *
      * @param Issue $child
-     * @return Issue
+     * @return $this
      */
     public function addChild(Issue $child)
     {
@@ -640,7 +638,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set priority
      *
      * @param IssuePriority $priority
-     * @return Issue
+     * @return $this
      */
     public function setPriority(IssuePriority $priority = null)
     {
@@ -663,7 +661,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set resolution
      *
      * @param IssueResolution $resolution
-     * @return Issue
+     * @return $this
      */
     public function setResolution(IssueResolution $resolution = null)
     {
@@ -686,7 +684,7 @@ class Issue extends ExtendIssue implements Taggable
      * Set organization
      *
      * @param Organization $organization
-     * @return Issue
+     * @return $this
      */
     public function setOrganization(Organization $organization = null)
     {

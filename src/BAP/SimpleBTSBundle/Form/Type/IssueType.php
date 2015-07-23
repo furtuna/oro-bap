@@ -33,7 +33,7 @@ class IssueType extends AbstractType
             ->add('code')
             ->add('summary')
             ->add('description')
-            ->add('priority', 'entity', [
+            ->add('priority', 'genemu_jqueryselect2_translatable_entity', [
                 'class'     => 'BAP\SimpleBTSBundle\Entity\IssuePriority',
                 'property'  => 'name',
             ])
@@ -50,9 +50,9 @@ class IssueType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'BAP\SimpleBTSBundle\Entity\Issue',
-        ));
+        ]);
     }
 
     /**

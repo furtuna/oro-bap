@@ -1,0 +1,14 @@
+issue_priority:
+    blocker:  'Blocker'
+    critical: 'Critical'
+    minor:    'Minor'
+    minimal:  'Minimal'
+issue_resolution:
+    unresolved:     'Unresolved'
+    fixed:          'Fixed'
+    wont_fix:       'Won''t Fix'
+    duplicate:      'Duplicate'
+    incomplete:     'Incomplete'
+    cant_reproduce: 'Cannot Reproduce'
+    done:           'Done'
+    wont_do:        'Won''t Do'

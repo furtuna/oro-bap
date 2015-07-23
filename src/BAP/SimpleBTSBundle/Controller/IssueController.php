@@ -103,18 +103,18 @@ class IssueController extends Controller
             $this->get('oro_tag.tag.manager')->saveTagging($issue);
 
             return $this->get('oro_ui.router')->redirectAfterSave(
-                array(
+                [
                     'route' => 'bap_bts.issue_update',
-                    'parameters' => array('id' => $issue->getId()),
-                ),
-                array('route' => 'bap_bts.issue_index'),
+                    'parameters' => ['id' => $issue->getId()],
+                ],
+                ['route' => 'bap_bts.issue_index'],
                 $issue
             );
         }
 
-        return array(
+        return [
             'entity' => $issue,
             'form' => $form->createView(),
-        );
+        ];
     }
 }
