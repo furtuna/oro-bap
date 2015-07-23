@@ -70,6 +70,11 @@ class IssueResolution implements Translatable
         return $this;
     }
 
+    /**
+     * Get code
+     *
+     * @return string
+     */
     public function getCode()
     {
         return $this->code;
