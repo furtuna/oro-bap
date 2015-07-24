@@ -142,3 +142,137 @@ datagrid:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  bap_bts.issue_delete
+
+    issue-subtasks-grid:
+        source:
+            acl_resource: bap_bts.issue_view
+            type: orm
+            query:
+                select:
+                    - issue.id
+                    - issue.code
+                    - issue.summary
+                    - priority.name as priorityName
+                    - resolution.name as resolutionName
+                    - reporter.username as reporterName
+                    - assignee.username as assigneeName
+                    - issue.createdAt
+                    - issue.updatedAt
+                from:
+                    - { table: BAPSimpleBTSBundle:Issue, alias: issue }
+                join:
+                    inner:
+                        - { join: issue.priority, alias: priority }
+                        - { join: issue.reporter, alias: reporter }
+                        - { join: issue.assignee, alias: assignee }
+                    left:
+                        - { join: issue.resolution, alias: resolution }
+                where:
+                    and:
+                        - issue.parent = :parentIssue
+            bind_parameters:
+                - parentIssue
+        columns:
+            code:
+                label: bap.simplebts.issue.code.label
+            summary:
+                label: bap.simplebts.issue.summary.label
+            priorityName:
+                label: bap.simplebts.issue.priority.label
+            resolutionName:
+                label: bap.simplebts.issue.resolution.label
+            reporterName:
+                label: bap.simplebts.issue.reporter.label
+            assigneeName:
+                label: bap.simplebts.issue.assignee.label
+            createdAt:
+                label: bap.simplebts.issue.created.label
+                frontend_type: datetime
+            updatedAt:
+                label: bap.simplebts.issue.updated.label
+                frontend_type: datetime
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: bap_bts.issue_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: bap_bts.issue_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: bap_bts_api_delete_issue
+                params:
+                    - id
+        sorters:
+            columns:
+                code:
+                    data_name: issue.code
+                summary:
+                    data_name: issue.summary
+                priorityName:
+                    data_name: priority.sortOrder
+                resolutionName:
+                    data_name: resolution.name
+                reporterName:
+                    data_name: reporter.username
+                assigneeName:
+                    data_name: assignee.username
+                createdAt:
+                    data_name: issue.createdAt
+                updatedAt:
+                    data_name: issue.updatedAt
+            default:
+                updatedAt: DESC
+        filters:
+            columns:
+                code:
+                    type: string
+                    data_name: issue.code
+                summary:
+                    type: string
+                    data_name: issue.summary
+                priorityName:
+                    type: entity
+                    data_name: issue.priority
+                    options:
+                        field_options:
+                            class: BAPSimpleBTSBundle:IssuePriority
+                            property: name
+                resolutionName:
+                    type: entity
+                    data_name: issue.resolution
+                    options:
+                        field_options:
+                            class: BAPSimpleBTSBundle:IssueResolution
+                            property: name
+                createdAt:
+                    type: datetime
+                    data_name: issue.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: issue.updatedAt
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  bap_bts.issue_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  bap_bts.issue_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  bap_bts.issue_delete

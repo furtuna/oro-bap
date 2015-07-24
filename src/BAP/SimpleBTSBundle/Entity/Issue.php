@@ -702,4 +702,14 @@ class Issue extends ExtendIssue implements Taggable
     {
         return $this->organization;
     }
+
+    /**
+     * If issue may contain subtasks
+     *
+     * @return bool
+     */
+    public function isStory()
+    {
+        return $this->getType() === self::TYPE_STORY;
+    }
 }

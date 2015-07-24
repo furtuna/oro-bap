@@ -37,9 +37,7 @@ class IssueType extends AbstractType
                 'class'     => 'BAP\SimpleBTSBundle\Entity\IssuePriority',
                 'property'  => 'name',
             ])
-            ->add('assignee', 'oro_jqueryselect2_hidden', [
-                'autocomplete_alias' => 'users'
-            ])
+            ->add('assignee', 'oro_jqueryselect2_hidden', ['autocomplete_alias' => 'users'])
             ->add('tags', 'oro_tag_select', ['label' => 'oro.tag.entity_plural_label'])
             ->addEventSubscriber($this->issueSubscriber)
         ;
