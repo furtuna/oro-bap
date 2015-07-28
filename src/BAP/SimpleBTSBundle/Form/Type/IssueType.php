@@ -5,6 +5,8 @@ namespace BAP\SimpleBTSBundle\Form\Type;
 use BAP\SimpleBTSBundle\Entity\Issue;
 use BAP\SimpleBTSBundle\Form\EventListener\IssueSubscriber;
 
+use Doctrine\ORM\EntityManager;
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -17,11 +19,20 @@ class IssueType extends AbstractType
     protected $issueSubscriber;
 
     /**
-     * @param IssueSubscriber $issueSubscriber
+     * @var EntityManager
      */
-    public function __construct(IssueSubscriber $issueSubscriber)
-    {
+    protected $entityManager;
+
+    /**
+     * @param IssueSubscriber $issueSubscriber
+     * @param EntityManager $entityManager
+     */
+    public function __construct(
+        IssueSubscriber $issueSubscriber,
+        EntityManager $entityManager
+    ) {
         $this->issueSubscriber = $issueSubscriber;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -39,8 +50,12 @@ class IssueType extends AbstractType
             ])
             ->add('assignee', 'oro_jqueryselect2_hidden', ['autocomplete_alias' => 'users'])
             ->add('tags', 'oro_tag_select', ['label' => 'oro.tag.entity_plural_label'])
+            ->add('parent', 'hidden')
             ->addEventSubscriber($this->issueSubscriber)
         ;
+
+        $issueToIdTransformer = new EntityToIdTransformer($this->entityManager, 'BAPSimpleBTSBundle:Issue');
+        $builder->get('parent')->addModelTransformer($issueToIdTransformer);
     }
 
     /**

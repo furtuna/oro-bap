@@ -276,3 +276,60 @@ datagrid:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  bap_bts.issue_delete
+
+    issue-collaborators-grid:
+        source:
+            acl_resource: bap_bts.issue_view
+            type: orm
+            query:
+                select:
+                    - collaborator.id
+                    - collaborator.username
+                    - collaborator.email
+                    - collaborator.firstName
+                    - collaborator.lastName
+                from:
+                    - { table: BAPSimpleBTSBundle:Issue, alias: issue }
+                join:
+                    inner:
+                        - { join: issue.collaborators, alias: collaborator }
+                where:
+                    and:
+                        - issue = :issue
+            bind_parameters:
+                - issue
+        columns:
+            username:
+                label: oro.user.username.label
+            email:
+                label: oro.user.email.label
+            firstName:
+                label: oro.user.first_name.label
+            lastName:
+                label: oro.user.last_name.label
+        properties:
+            id: ~
+        sorters:
+            columns:
+                username:
+                    data_name: collaborator.username
+                email:
+                    data_name: collaborator.email
+                firstName:
+                    data_name: collaborator.firstName
+                lastName:
+                    data_name: collaborator.lastName
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: collaborator.username
+                email:
+                    type: string
+                    data_name: collaborator.email
+                firstName:
+                    type: string
+                    data_name: collaborator.firstName
+                lastName:
+                    type: string
+                    data_name: collaborator.lastName

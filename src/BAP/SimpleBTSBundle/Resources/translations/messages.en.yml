@@ -26,3 +26,6 @@ bap:
                 subtask: Subtask
                 task: Task
             description.label: Description
+        controller:
+            issue:
+                saved: Issue saved

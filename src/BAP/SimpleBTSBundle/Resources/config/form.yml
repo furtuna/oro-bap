@@ -3,6 +3,7 @@ services:
         class: BAP\SimpleBTSBundle\Form\Type\IssueType
         arguments:
             - @bap_bts.form.event_subscriber.issue
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: bts_issue }
 

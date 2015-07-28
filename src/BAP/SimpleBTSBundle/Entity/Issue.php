@@ -164,7 +164,7 @@ class Issue extends ExtendIssue implements Taggable
     protected $parent;
 
     /**
-     * @var ArrayCollection|User[]
+     * @var ArrayCollection|Issue[]
      *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
      **/

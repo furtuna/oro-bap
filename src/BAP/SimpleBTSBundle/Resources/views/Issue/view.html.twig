@@ -7,9 +7,8 @@
     {% if entity.story and resource_granted('CREATE', entity) %}
         <div class="btn-group">
             {{ UI.addButton({
-                'path': path('bap_bts.issue_create'),
+                'path': path('bap_bts.issue_create', { parent_id: entity.id }),
                 'entity_label': 'bap.simplebts.issue.type.subtask'|trans,
-                'aCss': 'dialog-form-renderer no-hash'
             }) }}
         </div>
     {% endif %}
@@ -48,6 +47,17 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
+                    {% if entity.parent %}
+                        {% set parentViewLink %}
+                            {{ UI.link({
+                                'path': path('bap_bts.issue_view', { id: entity.parent.id }),
+                                'title': entity.parent.summary,
+                                'label': entity.parent.code,
+                            }) }}
+                        {% endset %}
+
+                        {{ UI.renderHtmlProperty('bap.simplebts.issue.parent.label'|trans, parentViewLink) }}
+                    {% endif %}
                     {{ UI.renderProperty('bap.simplebts.issue.code.label'|trans, entity.code) }}
                     {{ UI.renderProperty('bap.simplebts.issue.summary.label'|trans, entity.summary) }}
                     {{ UI.renderProperty('bap.simplebts.issue.description.label'|trans, entity.description) }}
@@ -87,6 +97,17 @@
             ]
         }]) %}
     {% endif %}
+
+    {% set collaborators %}
+        {{ dataGrid.renderGrid('issue-collaborators-grid', {'issue': entity}, {'enableViews': false}) }}
+    {% endset %}
+    {% set dataBlocks = dataBlocks|merge([{
+        'title': 'bap.simplebts.issue.collaborators.label'|trans,
+        'class': 'active',
+        'subblocks': [
+            { 'data' : [collaborators] }
+        ]
+    }]) %}
 
     {% set id = 'issueView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
