@@ -164,7 +164,7 @@ class Issue extends ExtendIssue implements Taggable
     protected $parent;
 
     /**
-     * @var ArrayCollection|User[]
+     * @var ArrayCollection|Issue[]
      *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
      **/
@@ -701,5 +701,15 @@ class Issue extends ExtendIssue implements Taggable
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * If issue may contain subtasks
+     *
+     * @return bool
+     */
+    public function isStory()
+    {
+        return $this->getType() === self::TYPE_STORY;
     }
 }

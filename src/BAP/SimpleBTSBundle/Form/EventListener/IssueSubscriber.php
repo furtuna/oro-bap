@@ -5,8 +5,11 @@ namespace BAP\SimpleBTSBundle\Form\EventListener;
 use BAP\SimpleBTSBundle\Entity\Issue;
 use BAP\SimpleBTSBundle\Entity\IssueResolution;
 use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class IssueSubscriber implements EventSubscriberInterface
@@ -31,6 +34,7 @@ class IssueSubscriber implements EventSubscriberInterface
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
+            FormEvents::PRE_SUBMIT   => 'preSubmit',
             FormEvents::SUBMIT       => 'submit',
         ];
     }
@@ -40,7 +44,22 @@ class IssueSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $this->addIssueTypes($event);
+        /** @var Issue $issue */
+        $issue = $event->getData();
+        $hasParent = boolval($issue->getParent());
+        $hasChildren = boolval($issue->getChildren()->count());
+
+        $this->changeIssueTypes($event->getForm(), $hasParent, $hasChildren);
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSubmit(FormEvent $event)
+    {
+        $data = $event->getData();
+        $hasParent = ! empty($data['parent']);
+        $this->changeIssueTypes($event->getForm(), $hasParent);
     }
 
     /**
@@ -62,22 +81,29 @@ class IssueSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FormEvent $event
+     * Change issue type choices if has parent/children
+     *
+     * @param FormInterface $form
+     * @param bool $parent
+     * @param bool $children
      */
-    protected function addIssueTypes(FormEvent $event)
+    protected function changeIssueTypes(FormInterface $form, $parent, $children = false)
     {
-        /** @var Issue $issue */
-        $issue = $event->getData();
-        $form = $event->getForm();
+        if ($form->has('type')) {
+            $form->remove('type');
+        }
 
-        if ($issue->getParent()) {
+        if ($parent) {
             $choices = [Issue::TYPE_SUBTASK => 'bap.simplebts.issue.type.subtask'];
         } else {
             $choices = [
                 Issue::TYPE_STORY   => 'bap.simplebts.issue.type.story',
-                Issue::TYPE_TASK    => 'bap.simplebts.issue.type.task',
-                Issue::TYPE_BUG     => 'bap.simplebts.issue.type.bug',
             ];
+
+            if (! $children) {
+                $choices[Issue::TYPE_TASK] = 'bap.simplebts.issue.type.task';
+                $choices[Issue::TYPE_BUG]  = 'bap.simplebts.issue.type.bug';
+            }
         }
 
         $form->add('type', 'genemu_jqueryselect2_choice', ['choices' => $choices]);

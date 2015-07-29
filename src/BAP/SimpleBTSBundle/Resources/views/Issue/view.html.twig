@@ -1,1 +1,115 @@
-{# TODO #}
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroTagBundle::macros.html.twig' as tag %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block navButtons %}
+    {% if entity.story and resource_granted('CREATE', entity) %}
+        <div class="btn-group">
+            {{ UI.addButton({
+                'path': path('bap_bts.issue_create', { parent_id: entity.id }),
+                'entity_label': 'bap.simplebts.issue.type.subtask'|trans,
+            }) }}
+        </div>
+    {% endif %}
+
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('bap_bts.issue_update', { id: entity.id }),
+            'entity_label': 'bap.simplebts.issue.entity_label'|trans
+        }) }}
+    {% endif %}
+
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('bap_bts_api_delete_issue', {'id': entity.id}),
+            'dataRedirect': path('bap_bts.issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-issue',
+            'dataId': entity.id,
+            'entity_label': 'bap.simplebts.issue.entity_label'|trans,
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('bap_bts.issue_index'),
+        'indexLabel': 'bap.simplebts.issue.entity_plural_label'|trans,
+        'entityTitle': entity.code
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {% if entity.parent %}
+                        {% set parentViewLink %}
+                            {{ UI.link({
+                                'path': path('bap_bts.issue_view', { id: entity.parent.id }),
+                                'title': entity.parent.summary,
+                                'label': entity.parent.code,
+                            }) }}
+                        {% endset %}
+
+                        {{ UI.renderHtmlProperty('bap.simplebts.issue.parent.label'|trans, parentViewLink) }}
+                    {% endif %}
+                    {{ UI.renderProperty('bap.simplebts.issue.code.label'|trans, entity.code) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.summary.label'|trans, entity.summary) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.description.label'|trans, entity.description) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.type.label'|trans, entity.type) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.priority.label'|trans, entity.priority.name) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.resolution.label'|trans, entity.resolution.name) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.reporter.label'|trans, entity.reporter) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.assignee.label'|trans, entity.assignee) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.created.label'|trans, entity.createdAt|date) }}
+                    {{ UI.renderProperty('bap.simplebts.issue.updated.label'|trans, entity.updatedAt|date) }}
+                </div>
+                <div class="responsive-block">
+                    {% if resource_granted('oro_tag_view') %}
+                        {{ UI.renderHtmlProperty('oro.tag.entity_plural_label'|trans, tag.renderView(entity)) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set dataBlocks = [{
+        'title': 'General Information'|trans,
+        'class': 'active',
+        'subblocks': [
+            { 'data' : [data] }
+        ]
+    }] %}
+
+    {% if entity.story %}
+        {% set subtasks %}
+            {{ dataGrid.renderGrid('issue-subtasks-grid', {'parentIssue': entity}, {'enableViews': false}) }}
+        {% endset %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'bap.simplebts.issue.children.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [subtasks] }
+            ]
+        }]) %}
+    {% endif %}
+
+    {% set collaborators %}
+        {{ dataGrid.renderGrid('issue-collaborators-grid', {'issue': entity}, {'enableViews': false}) }}
+    {% endset %}
+    {% set dataBlocks = dataBlocks|merge([{
+        'title': 'bap.simplebts.issue.collaborators.label'|trans,
+        'class': 'active',
+        'subblocks': [
+            { 'data' : [collaborators] }
+        ]
+    }]) %}
+
+    {% set id = 'issueView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

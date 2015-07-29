@@ -47,6 +47,19 @@
 
 {% block content_data %}
     {% set id = 'issue-edit' %}
+    {% set rowParent %}
+        {% if form.vars.value.parent %}
+            {% set parentViewLink %}
+                {{ UI.link({
+                    'path': path('bap_bts.issue_view', { id: form.vars.value.parent.id }),
+                    'title': form.vars.value.parent.summary,
+                    'label': form.vars.value.parent.code,
+                }) }}
+            {% endset %}
+
+            {{ UI.renderHtmlProperty('bap.simplebts.issue.parent.label'|trans, parentViewLink) }}
+        {% endif %}
+    {% endset %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
@@ -54,6 +67,7 @@
         'subblocks': [{
             'title': '',
             'data': [
+                rowParent,
                 form_row(form.code),
                 form_row(form.summary),
                 form_row(form.description),
