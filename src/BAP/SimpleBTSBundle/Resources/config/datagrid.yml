@@ -15,6 +15,7 @@ datagrid:
                     - assignee.username as assigneeName
                     - issue.createdAt
                     - issue.updatedAt
+                    - workflowStep.label as workflowStepLabel
                 from:
                     - { table: BAPSimpleBTSBundle:Issue, alias: issue }
                 join:
@@ -24,6 +25,7 @@ datagrid:
                         - { join: issue.assignee, alias: assignee }
                     left:
                         - { join: issue.resolution, alias: resolution }
+                        - { join: issue.workflowStep, alias: workflowStep }
         columns:
             code:
                 label: bap.simplebts.issue.code.label
@@ -31,6 +33,8 @@ datagrid:
                 label: bap.simplebts.issue.summary.label
             type:
                 label: bap.simplebts.issue.type.label
+            workflowStepLabel:
+                label: bap.simplebts.issue.workflow_step.label
             priorityName:
                 label: bap.simplebts.issue.priority.label
             resolutionName:
@@ -70,6 +74,8 @@ datagrid:
                     data_name: issue.summary
                 type:
                     data_name: issue.type
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
                 priorityName:
                     data_name: priority.sortOrder
                 resolutionName:
@@ -102,6 +108,13 @@ datagrid:
                                 task:    bap.simplebts.issue.type.task
                                 subtask: bap.simplebts.issue.type.subtask
                                 bug:     bap.simplebts.issue.type.bug
+                workflowStepLabel:
+                    type: entity
+                    data_name: issue.workflowStep
+                    options:
+                        field_type: oro_workflow_step_select
+                        field_options:
+                            workflow_entity_class: BAP\SimpleBTSBundle\Entity\Issue
                 priorityName:
                     type: entity
                     data_name: issue.priority
@@ -158,6 +171,7 @@ datagrid:
                     - assignee.username as assigneeName
                     - issue.createdAt
                     - issue.updatedAt
+                    - workflowStep.label as workflowStepLabel
                 from:
                     - { table: BAPSimpleBTSBundle:Issue, alias: issue }
                 join:
@@ -167,6 +181,7 @@ datagrid:
                         - { join: issue.assignee, alias: assignee }
                     left:
                         - { join: issue.resolution, alias: resolution }
+                        - { join: issue.workflowStep, alias: workflowStep }
                 where:
                     and:
                         - issue.parent = :parentIssue
@@ -177,6 +192,8 @@ datagrid:
                 label: bap.simplebts.issue.code.label
             summary:
                 label: bap.simplebts.issue.summary.label
+            workflowStepLabel:
+                label: bap.simplebts.issue.workflow_step.label
             priorityName:
                 label: bap.simplebts.issue.priority.label
             resolutionName:
@@ -214,6 +231,8 @@ datagrid:
                     data_name: issue.code
                 summary:
                     data_name: issue.summary
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
                 priorityName:
                     data_name: priority.sortOrder
                 resolutionName:
@@ -236,6 +255,13 @@ datagrid:
                 summary:
                     type: string
                     data_name: issue.summary
+                workflowStepLabel:
+                    type: entity
+                    data_name: issue.workflowStep
+                    options:
+                        field_type: oro_workflow_step_select
+                        field_options:
+                            workflow_entity_class: BAP\SimpleBTSBundle\Entity\Issue
                 priorityName:
                     type: entity
                     data_name: issue.priority

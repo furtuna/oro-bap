@@ -26,6 +26,8 @@ bap:
                 subtask: Subtask
                 task: Task
             description.label: Description
+            workflow_step.label: Status
+            workflow_item.label: Workflow Item
         controller:
             issue:
                 saved: Issue saved
