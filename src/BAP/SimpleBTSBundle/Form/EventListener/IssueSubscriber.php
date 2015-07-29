@@ -5,10 +5,12 @@ namespace BAP\SimpleBTSBundle\Form\EventListener;
 use BAP\SimpleBTSBundle\Entity\Issue;
 use BAP\SimpleBTSBundle\Entity\IssueResolution;
 use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormInterface;
+
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class IssueSubscriber implements EventSubscriberInterface
 {

@@ -14,32 +14,25 @@ use Symfony\Component\DomCrawler\Form;
  */
 class IssueControllerTest extends WebTestCase
 {
-    /**
-     * @var IssueRepository
-     */
-    protected static $issueRepository;
-
-    /**
-     * @var User
-     */
-    protected static $user;
-
-    public static function setUpBeforeClass()
-    {
-        $em = self::getContainer()->get('doctrine');
-        self::$issueRepository = $em->getRepository('BAPSimpleBTSBundle:Issue');
-        self::$user = self::getContainer()->get('oro_user.manager')->findUserByUsername('admin');
-    }
-
-    public static function tearDownAfterClass()
-    {
-        self::$issueRepository = null;
-        self::$user = null;
-    }
-
     protected function setUp()
     {
         $this->initClient([], $this->generateBasicAuthHeader());
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUser()
+    {
+        return $this->getContainer()->get('oro_user.manager')->findUserByUsername('admin');
+    }
+
+    /**
+     * @return IssueRepository
+     */
+    protected function getIssueRepository()
+    {
+        return $this->getContainer()->get('doctrine')->getRepository('BAPSimpleBTSBundle:Issue');
     }
 
     public function testIndex()
@@ -54,6 +47,7 @@ class IssueControllerTest extends WebTestCase
      */
     public function testCreate()
     {
+        $user = $this->getUser();
         $crawler = $this->client->request('GET', $this->getUrl('bap_bts.issue_create'));
 
         /** @var Form $form */
@@ -62,7 +56,7 @@ class IssueControllerTest extends WebTestCase
         $form['bts_issue[summary]'] = 'Summary 001';
         $form['bts_issue[description]'] = 'Description 001';
         $form['bts_issue[type]'] = Issue::TYPE_STORY;
-        $form['bts_issue[assignee]'] = self::$user->getId();
+        $form['bts_issue[assignee]'] = $user->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -76,8 +70,9 @@ class IssueControllerTest extends WebTestCase
      */
     public function testCreateSubtask()
     {
+        $user = $this->getUser();
         /** @var Issue $parentIssue */
-        $parentIssue = self::$issueRepository->findBy(['code' => 'FT-001']);
+        $parentIssue = $this->getIssueRepository()->findOneBy(['code' => 'FT-001']);
 
         $crawler = $this->client->request('GET', $this->getUrl(
             'bap_bts.issue_create',
@@ -90,7 +85,8 @@ class IssueControllerTest extends WebTestCase
         $form['bts_issue[summary]'] = 'Summary 002';
         $form['bts_issue[description]'] = 'Description 002';
         $form['bts_issue[type]'] = Issue::TYPE_SUBTASK;
-        $form['bts_issue[assignee]'] = self::$user->getId();
+        $form['bts_issue[assignee]'] = $user->getId();
+        $form['bts_issue[parent]'] = $parentIssue->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -107,5 +103,46 @@ class IssueControllerTest extends WebTestCase
         $response = $this->client->requestGrid('issues-grid');
         $result = $this->getJsonResponseContent($response, 200);
         $this->assertEquals(2, $result['options']['totalRecords']);
+    }
+
+    /**
+     * @depends testIssuesGrid
+     */
+    public function testSubtasksGrid()
+    {
+        /** @var Issue $parentIssue */
+        $parentIssue = $this->getIssueRepository()->findOneBy(['code' => 'FT-001']);
+
+        $response = $this->client->requestGrid('issue-subtasks-grid', [
+            'issue-subtasks-grid[parentIssue]' => $parentIssue->getId(),
+        ]);
+
+        $result = $this->getJsonResponseContent($response, 200);
+        $this->assertEquals(1, $result['options']['totalRecords']);
+    }
+
+    /**
+     * @depends testSubtasksGrid
+     */
+    public function testUpdate()
+    {
+        /** @var Issue $issue */
+        $issue = $this->getIssueRepository()->findOneBy(['code' => 'FT-001']);
+
+        $crawler = $this->client->request('GET', $this->getUrl(
+            'bap_bts.issue_update',
+            ['id' => $issue->getId()]
+        ));
+
+        /** @var Form $form */
+        $form = $crawler->selectButton('Save and Close')->form();
+        $form['bts_issue[summary]'] = 'Summary 001 changed';
+        $form['bts_issue[description]'] = 'Description 001 changed';
+
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
+        $result = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertContains('Issue saved', $crawler->html());
     }
 }
