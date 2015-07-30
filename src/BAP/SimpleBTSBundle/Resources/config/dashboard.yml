@@ -1,0 +1,8 @@
+oro_dashboard_config:
+    widgets:
+        issue_chart:
+            label:       bap.simplebts.dashboard.chart.label
+            description: bap.simplebts.dashboard.chart.description
+            acl:         bap_bts.issue_view
+            route:       bap_bts.issue_chart
+            route_parameters: { bundle: BAPSimpleBTSBundle, name: issueChart }

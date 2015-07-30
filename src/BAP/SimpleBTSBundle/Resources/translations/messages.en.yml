@@ -35,3 +35,6 @@ bap:
             code.label: Code
         issueresolution:
             code.label: Code
+        dashboard:
+            chart.label: Issues by Status
+            chart.description: This widget shows issues assigned to you by status
