@@ -31,3 +31,7 @@ bap:
         controller:
             issue:
                 saved: Issue saved
+        issuepriority:
+            code.label: Code
+        issueresolution:
+            code.label: Code

@@ -61,6 +61,13 @@ class Issue extends ExtendIssue implements Taggable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=10
+     *          }
+     *      }
+     * )
      */
     protected $id;
 
@@ -68,6 +75,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=30
+     *          }
+     *      }
+     * )
      */
     protected $summary;
 
@@ -75,6 +89,14 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=10)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true,
+     *              "order"=20
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
@@ -82,6 +104,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=140
+     *          }
+     *      }
+     * )
      */
     protected $description;
 
@@ -89,6 +118,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=50)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=40
+     *          }
+     *      }
+     * )
      */
     protected $type;
 
@@ -101,6 +137,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var IssuePriority
      *
      * @ORM\ManyToOne(targetEntity="IssuePriority")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=50
+     *          }
+     *      }
+     * )
      */
     protected $priority;
 
@@ -108,6 +151,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var IssueResolution
      *
      * @ORM\ManyToOne(targetEntity="IssueResolution")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60
+     *          }
+     *      }
+     * )
      */
     protected $resolution;
 
@@ -116,6 +166,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=70
+     *          }
+     *      }
+     * )
      */
     protected $reporter;
 
@@ -124,6 +181,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=90
+     *          }
+     *      }
+     * )
      */
     protected $organization;
 
@@ -131,6 +195,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var User
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=80
+     *          }
+     *      }
+     * )
      */
     protected $assignee;
 
@@ -139,6 +210,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToMany(targetEntity="Issue", inversedBy="relatedToIssues")
      * @ORM\JoinTable(name="bts_issue2issue")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $relatedIssues;
 
@@ -146,6 +224,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var ArrayCollection|Issue[]
      *
      * @ORM\ManyToMany(targetEntity="Issue", mappedBy="relatedIssues")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $relatedToIssues;
 
@@ -157,6 +242,13 @@ class Issue extends ExtendIssue implements Taggable
      *     joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="collaborator_id", referencedColumnName="id")}
      * )
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=130
+     *          }
+     *      }
+     * )
      **/
     protected $collaborators;
 
@@ -165,6 +257,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=100
+     *          }
+     *      }
+     * )
      **/
     protected $parent;
 
@@ -172,6 +271,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var ArrayCollection|Issue[]
      *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $children;
 
@@ -183,6 +289,9 @@ class Issue extends ExtendIssue implements Taggable
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
+     *          },
+     *          "importexport"={
+     *              "order"=110
      *          }
      *      }
      * )
@@ -197,6 +306,9 @@ class Issue extends ExtendIssue implements Taggable
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
+     *          },
+     *          "importexport"={
+     *              "order"=120
      *          }
      *      }
      * )

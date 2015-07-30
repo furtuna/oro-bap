@@ -6,21 +6,6 @@ definitions:
         order: 10
         exclude_definitions: [issue_definition]
         actions_configuration:
-            - @assign_active_user:
-                attribute: $.user
-            - @call_method:
-                attribute: $.containsActiveUser
-                object: $collaborators
-                method: 'contains'
-                method_parameters: [$.user]
-            - @tree:
-                conditions:
-                    @equal: [$.containsActiveUser, false]
-                actions:
-                    - @call_method:
-                        object: $collaborators
-                        method: 'add'
-                        method_parameters: [$.user]
             - @call_method:
                 attribute: $.containsAssignee
                 object: $collaborators
