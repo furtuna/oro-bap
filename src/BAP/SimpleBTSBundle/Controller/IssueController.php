@@ -117,14 +117,7 @@ class IssueController extends Controller
             $entityManager->flush();
             $this->get('oro_tag.tag.manager')->saveTagging($issue);
 
-            if ($issue->getParent()) {
-                $redirect = [
-                    'route'      => 'bap_bts.issue_view',
-                    'parameters' => ['id' => $issue->getParent()->getId()]
-                ];
-            } else {
-                $redirect = ['route' => 'bap_bts.issue_index'];
-            }
+            $id = $issue->getParent() ? $issue->getParent()->getId() : $issue->getId();
 
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -136,7 +129,10 @@ class IssueController extends Controller
                     'route' => 'bap_bts.issue_update',
                     'parameters' => ['id' => $issue->getId()],
                 ],
-                $redirect,
+                [
+                    'route'      => 'bap_bts.issue_view',
+                    'parameters' => ['id' => $id]
+                ],
                 $issue
             );
         }

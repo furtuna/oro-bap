@@ -1,7 +1,8 @@
 <?php
 
-namespace BAP\SimpleBTSBundle\Controller\Dashboard;
+namespace BAP\SimpleBTSBundle\Controller;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,7 +22,7 @@ class DashboardController extends Controller
      *     permission="VIEW"
      * )
      */
-    public function issueAction()
+    public function issueChartAction()
     {
         $items = $this->getDoctrine()
             ->getRepository('BAPSimpleBTSBundle:Issue')
@@ -40,6 +41,28 @@ class DashboardController extends Controller
                 'settings' => ['xNoTicks' => count($items)],
             ])
             ->getView();
+
+        return $widgetAttr;
+    }
+
+    /**
+     * @Route("/issue/user_issues_grid", name="bap_bts.user_issues_grid")
+     * @Template()
+     * @Acl(
+     *     id="bap_bts.issue_view",
+     *     type="entity",
+     *     class="BAPSimpleBTSBundle:Issue",
+     *     permission="VIEW"
+     * )
+     */
+    public function userIssuesGridAction()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig('user_issues_grid');
+        $widgetAttr['gridName'] = 'user-issues-grid-widget';
+        $widgetAttr['params'] = ['userId' => $user->getId()];
+        $widgetAttr['renderParams'] = ['enableViews' => false];
 
         return $widgetAttr;
     }

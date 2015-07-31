@@ -6,3 +6,9 @@ oro_dashboard_config:
             acl:         bap_bts.issue_view
             route:       bap_bts.issue_chart
             route_parameters: { bundle: BAPSimpleBTSBundle, name: issueChart }
+        user_issues_grid:
+            label:       bap.simplebts.dashboard.user_issues_grid.label
+            description: bap.simplebts.dashboard.user_issues_grid.description
+            acl:         bap_bts.issue_view
+            route:       bap_bts.user_issues_grid
+            route_parameters: { bundle: BAPSimpleBTSBundle, name: userIssuesGrid }

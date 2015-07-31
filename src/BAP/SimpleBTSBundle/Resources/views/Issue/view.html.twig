@@ -87,7 +87,7 @@
 
     {% if entity.story %}
         {% set subtasks %}
-            {{ dataGrid.renderGrid('issue-subtasks-grid', {'parentIssue': entity}, {'enableViews': false}) }}
+            {{ dataGrid.renderGrid('issue-subtasks-grid', {'parentIssueId': entity.id}, {'enableViews': false}) }}
         {% endset %}
         {% set dataBlocks = dataBlocks|merge([{
             'title': 'bap.simplebts.issue.children.label'|trans,
@@ -99,7 +99,7 @@
     {% endif %}
 
     {% set collaborators %}
-        {{ dataGrid.renderGrid('issue-collaborators-grid', {'issue': entity}, {'enableViews': false}) }}
+        {{ dataGrid.renderGrid('issue-collaborators-grid', {'issueId': entity.id}, {'enableViews': false}) }}
     {% endset %}
     {% set dataBlocks = dataBlocks|merge([{
         'title': 'bap.simplebts.issue.collaborators.label'|trans,

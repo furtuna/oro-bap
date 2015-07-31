@@ -12,3 +12,8 @@ services:
         factory_method: getRepository
         arguments:
             - BAP\SimpleBTSBundle\Entity\IssueResolution
+
+    bap_bts.provider.issues_grid_helper:
+        class: BAP\SimpleBTSBundle\Provider\IssuesGridHelper
+        arguments:
+            - @oro_user.manager
