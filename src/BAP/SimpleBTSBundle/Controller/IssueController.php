@@ -3,6 +3,7 @@
 namespace BAP\SimpleBTSBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -48,11 +49,17 @@ class IssueController extends Controller
      */
     public function viewAction(Issue $issue)
     {
-        return ['issue' => $issue];
+        return ['entity' => $issue];
     }
 
     /**
-     * @Route("/create", name="bap_bts.issue_create")
+     * @Route(
+     *     "/create/{parent_id}",
+     *     name="bap_bts.issue_create",
+     *     requirements={"parent_id":"\d+"},
+     *     defaults={"parent_id":0}
+     * )
+     * @ParamConverter("parent", class="BAPSimpleBTSBundle:Issue", options={"id":"parent_id"})
      * @Template("BAPSimpleBTSBundle:Issue:update.html.twig")
      * @Acl(
      *     id="bap_bts.issue_create",
@@ -61,11 +68,17 @@ class IssueController extends Controller
      *     permission="CREATE"
      * )
      * @param Request $request
+     * @param Issue $parent
      * @return array|RedirectResponse
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, Issue $parent = null)
     {
-        return $this->update(new Issue(), $request);
+        $issue = new Issue();
+        if ($parent) {
+            $issue->setParent($parent);
+        }
+
+        return $this->update($issue, $request);
     }
 
     /**
@@ -87,6 +100,8 @@ class IssueController extends Controller
     }
 
     /**
+     * TODO: Create form handler
+     *
      * @param Issue $issue
      * @param Request $request
      * @return array|RedirectResponse
@@ -102,12 +117,22 @@ class IssueController extends Controller
             $entityManager->flush();
             $this->get('oro_tag.tag.manager')->saveTagging($issue);
 
+            $id = $issue->getParent() ? $issue->getParent()->getId() : $issue->getId();
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('bap.simplebts.controller.issue.saved')
+            );
+
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route' => 'bap_bts.issue_update',
                     'parameters' => ['id' => $issue->getId()],
                 ],
-                ['route' => 'bap_bts.issue_index'],
+                [
+                    'route'      => 'bap_bts.issue_view',
+                    'parameters' => ['id' => $id]
+                ],
                 $issue
             );
         }

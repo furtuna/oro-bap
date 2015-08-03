@@ -1,0 +1,21 @@
+services:
+    bap_bts.importexport.data_converter:
+        parent: oro_importexport.data_converter.configurable
+
+    bap_bts.importexport.template_fixture.data_converter:
+        parent: oro_importexport.data_converter.template_fixture.configurable
+
+    # Export processor
+    bap_bts.importexport.processor.export:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, [@bap_bts.importexport.data_converter]]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: BAP\SimpleBTSBundle\Entity\Issue, alias: bap_bts }
+
+    bap_bts.importexport.processor.export_template:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, [@bap_bts.importexport.template_fixture.data_converter]]
+        tags:
+            - { name: oro_importexport.processor, type: export_template, entity: BAP\SimpleBTSBundle\Entity\Issue, alias: bap_bts }

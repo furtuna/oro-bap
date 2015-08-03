@@ -26,3 +26,18 @@ bap:
                 subtask: Subtask
                 task: Task
             description.label: Description
+            workflow_step.label: Status
+            workflow_item.label: Workflow Item
+        controller:
+            issue:
+                saved: Issue saved
+        issuepriority:
+            code.label: Code
+        issueresolution:
+            code.label: Code
+        dashboard:
+            chart.label: Issues by Status
+            chart.description: This widget shows issues assigned to you by status
+            user_issues_grid.label: Last 10 Active Issues
+            user_issues_grid.description: Last 10 active issues where you are collaborator
+            user_issues_grid.view_all: View All

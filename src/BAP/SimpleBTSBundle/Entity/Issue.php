@@ -14,6 +14,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * @ORM\Table(name="bts_issue", indexes={
@@ -39,6 +41,9 @@ use Oro\Bundle\UserBundle\Entity\User;
  *          },
  *          "security"={
  *              "type"="ACL"
+ *          },
+ *          "workflow"={
+ *              "active_workflow"="issue_flow"
  *          }
  *      }
  * )
@@ -56,6 +61,13 @@ class Issue extends ExtendIssue implements Taggable
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=10
+     *          }
+     *      }
+     * )
      */
     protected $id;
 
@@ -63,6 +75,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="summary", type="string", length=255)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=30
+     *          }
+     *      }
+     * )
      */
     protected $summary;
 
@@ -70,6 +89,14 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=10)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true,
+     *              "order"=20
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
@@ -77,6 +104,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="description", type="text")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=140
+     *          }
+     *      }
+     * )
      */
     protected $description;
 
@@ -84,6 +118,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=50)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=40
+     *          }
+     *      }
+     * )
      */
     protected $type;
 
@@ -96,6 +137,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var IssuePriority
      *
      * @ORM\ManyToOne(targetEntity="IssuePriority")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=50
+     *          }
+     *      }
+     * )
      */
     protected $priority;
 
@@ -103,6 +151,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var IssueResolution
      *
      * @ORM\ManyToOne(targetEntity="IssueResolution")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60
+     *          }
+     *      }
+     * )
      */
     protected $resolution;
 
@@ -111,6 +166,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=70
+     *          }
+     *      }
+     * )
      */
     protected $reporter;
 
@@ -119,6 +181,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=90
+     *          }
+     *      }
+     * )
      */
     protected $organization;
 
@@ -126,6 +195,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var User
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="assignee_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=80
+     *          }
+     *      }
+     * )
      */
     protected $assignee;
 
@@ -134,6 +210,13 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToMany(targetEntity="Issue", inversedBy="relatedToIssues")
      * @ORM\JoinTable(name="bts_issue2issue")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $relatedIssues;
 
@@ -141,6 +224,13 @@ class Issue extends ExtendIssue implements Taggable
      * @var ArrayCollection|Issue[]
      *
      * @ORM\ManyToMany(targetEntity="Issue", mappedBy="relatedIssues")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $relatedToIssues;
 
@@ -152,6 +242,13 @@ class Issue extends ExtendIssue implements Taggable
      *     joinColumns={@ORM\JoinColumn(name="issue_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="collaborator_id", referencedColumnName="id")}
      * )
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=130
+     *          }
+     *      }
+     * )
      **/
     protected $collaborators;
 
@@ -160,13 +257,27 @@ class Issue extends ExtendIssue implements Taggable
      *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=100
+     *          }
+     *      }
+     * )
      **/
     protected $parent;
 
     /**
-     * @var ArrayCollection|User[]
+     * @var ArrayCollection|Issue[]
      *
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $children;
 
@@ -178,6 +289,9 @@ class Issue extends ExtendIssue implements Taggable
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
+     *          },
+     *          "importexport"={
+     *              "order"=110
      *          }
      *      }
      * )
@@ -192,11 +306,30 @@ class Issue extends ExtendIssue implements Taggable
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
+     *          },
+     *          "importexport"={
+     *              "order"=120
      *          }
      *      }
      * )
      */
     protected $updatedAt;
+
+    /**
+     * @var WorkflowItem
+     *
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowItem;
+
+    /**
+     * @var WorkflowStep
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
+     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowStep;
 
     public function __construct()
     {
@@ -701,5 +834,53 @@ class Issue extends ExtendIssue implements Taggable
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * If issue may contain subtasks
+     *
+     * @return bool
+     */
+    public function isStory()
+    {
+        return $this->getType() === self::TYPE_STORY;
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @return $this
+     */
+    public function setWorkflowItem($workflowItem)
+    {
+        $this->workflowItem = $workflowItem;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowItem
+     */
+    public function getWorkflowItem()
+    {
+        return $this->workflowItem;
+    }
+
+    /**
+     * @param WorkflowItem $workflowStep
+     * @return $this
+     */
+    public function setWorkflowStep($workflowStep)
+    {
+        $this->workflowStep = $workflowStep;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowStep
+     */
+    public function getWorkflowStep()
+    {
+        return $this->workflowStep;
     }
 }

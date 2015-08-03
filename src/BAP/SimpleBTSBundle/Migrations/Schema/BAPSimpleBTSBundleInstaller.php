@@ -67,6 +67,9 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $table->addColumn('updatedAt', 'datetime', []);
         $table->addColumn('resolution_id', 'integer', ['notnull' => false]);
         $table->addColumn('priority_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
+
         $table->setPrimaryKey(['id']);
         $table->addIndex(['reporter_id'], 'IDX_48518651E1CFE6F5', []);
         $table->addIndex(['organization_id'], 'bts_issue_organization_idx', []);
@@ -78,6 +81,8 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
         $table->addUniqueIndex(['code'], 'bts_issue_code_idx');
         $table->addIndex(['priority_id'], 'IDX_48518651497B19F9', []);
         $table->addIndex(['resolution_id'], 'IDX_4851865112A1C43A', []);
+        $table->addUniqueIndex(['workflow_item_id'], 'bts_issue_workflow_item_idx');
+        $table->addIndex(['workflow_step_id'], 'bts_issue_workflow_step_idx', []);
     }
 
     /**
@@ -200,6 +205,18 @@ class BAPSimpleBTSBundleInstaller implements Installation, NoteExtensionAwareInt
             ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
         );
     }
 

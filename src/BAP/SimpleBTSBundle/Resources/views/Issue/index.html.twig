@@ -4,7 +4,12 @@
 {% set pageTitle = 'bap.simplebts.issue.entity_plural_label'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('bap_bts.issue_view') %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        exportProcessor: 'bap_bts',
+        exportTemplateProcessor: 'bap_bts'
+    } %}
+
+    {% if resource_granted('bap_bts.issue_create') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path': path('bap_bts.issue_create'),

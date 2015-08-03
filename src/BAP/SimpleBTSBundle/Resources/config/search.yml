@@ -11,3 +11,59 @@ BAP\SimpleBTSBundle\Entity\Issue:
             name:                   summary
             target_type:            text
             target_fields:          [summary]
+        -
+            name:                   code
+            target_type:            text
+            target_fields:          [code]
+        -
+            name:                   type
+            target_type:            text
+            target_fields:          [type]
+        -
+            name:                   priority
+            relation_type:          many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [priority]
+        -
+            name:                   resolution
+            relation_type:          many-to-one
+            relation_fields:
+                -
+                    name: name
+                    target_type: text
+                    target_fields: [resolution]
+        -
+            name:                   workflowStep
+            relation_type:          many-to-one
+            relation_fields:
+                -
+                    name: label
+                    target_type: text
+                    target_fields: [workflowStep]
+        -
+            name:                   reporter
+            relation_type:          many-to-one
+            relation_fields:
+                -
+                    name: firstName
+                    target_type: text
+                    target_fields: [reporter]
+                -
+                    name: lastName
+                    target_type: text
+                    target_fields: [reporter]
+        -
+            name:                   assignee
+            relation_type:          many-to-one
+            relation_fields:
+                -
+                    name: firstName
+                    target_type: text
+                    target_fields: [assignee]
+                -
+                    name: lastName
+                    target_type: text
+                    target_fields: [assignee]

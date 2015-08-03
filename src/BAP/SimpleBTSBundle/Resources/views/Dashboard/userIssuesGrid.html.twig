@@ -1,0 +1,11 @@
+{% extends 'OroDashboardBundle:Dashboard:grid.html.twig' %}
+
+{% block actions %}
+    {% set actions = [{
+        'url': path('bap_bts.issue_index'),
+        'type': 'link',
+        'label': 'bap.simplebts.dashboard.user_issues_grid.view_all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}

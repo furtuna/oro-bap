@@ -2,10 +2,14 @@
 
 namespace BAP\SimpleBTSBundle\Entity;
 
+use BAP\SimpleBTSBundle\Model\ExtendIssuePriority;
 use Doctrine\ORM\Mapping as ORM;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * IssuePriority
@@ -13,8 +17,9 @@ use Gedmo\Translatable\Translatable;
  * @ORM\Table(name="bts_issue_priority")
  * @Gedmo\TranslationEntity(class="BAP\SimpleBTSBundle\Entity\EntityTranslation")
  * @ORM\Entity
+ * @Config
  */
-class IssuePriority implements Translatable
+class IssuePriority extends ExtendIssuePriority implements Translatable
 {
     /**
      * @var integer
@@ -29,6 +34,13 @@ class IssuePriority implements Translatable
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=30)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
 

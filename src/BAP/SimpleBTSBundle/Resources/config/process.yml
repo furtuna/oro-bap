@@ -1,0 +1,41 @@
+definitions:
+    issue_definition:
+        label: 'Add Issue Collaborator'
+        enabled: true
+        entity: BAP\SimpleBTSBundle\Entity\Issue
+        order: 10
+        exclude_definitions: [issue_definition]
+        actions_configuration:
+            - @call_method:
+                attribute: $.containsAssignee
+                object: $collaborators
+                method: 'contains'
+                method_parameters: [$assignee]
+            - @tree:
+                conditions:
+                    @equal: [$.containsAssignee, false]
+                actions:
+                    - @call_method:
+                        object: $collaborators
+                        method: 'add'
+                        method_parameters: [$assignee]
+            - @call_method:
+                attribute: $.containsReporter
+                object: $collaborators
+                method: 'contains'
+                method_parameters: [$reporter]
+            - @tree:
+                conditions:
+                    @equal: [$.containsReporter, false]
+                actions:
+                    - @call_method:
+                        object: $collaborators
+                        method: 'add'
+                        method_parameters: [$reporter]
+
+triggers:
+    issue_definition:
+        -
+            event: create
+        -
+            event: update

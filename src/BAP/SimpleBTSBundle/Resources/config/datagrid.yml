@@ -15,6 +15,7 @@ datagrid:
                     - assignee.username as assigneeName
                     - issue.createdAt
                     - issue.updatedAt
+                    - workflowStep.label as workflowStepLabel
                 from:
                     - { table: BAPSimpleBTSBundle:Issue, alias: issue }
                 join:
@@ -22,8 +23,12 @@ datagrid:
                         - { join: issue.priority, alias: priority }
                         - { join: issue.reporter, alias: reporter }
                         - { join: issue.assignee, alias: assignee }
-                    left:
                         - { join: issue.resolution, alias: resolution }
+                        - { join: issue.workflowStep, alias: workflowStep }
+                    left:
+                        - { join: issue.parent, alias: parentIssue }
+                        - { join: issue.collaborators, alias: issueCollaborators }
+                groupBy: issue.id
         columns:
             code:
                 label: bap.simplebts.issue.code.label
@@ -31,6 +36,8 @@ datagrid:
                 label: bap.simplebts.issue.summary.label
             type:
                 label: bap.simplebts.issue.type.label
+            workflowStepLabel:
+                label: bap.simplebts.issue.workflow_step.label
             priorityName:
                 label: bap.simplebts.issue.priority.label
             resolutionName:
@@ -70,6 +77,8 @@ datagrid:
                     data_name: issue.summary
                 type:
                     data_name: issue.type
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
                 priorityName:
                     data_name: priority.sortOrder
                 resolutionName:
@@ -102,6 +111,13 @@ datagrid:
                                 task:    bap.simplebts.issue.type.task
                                 subtask: bap.simplebts.issue.type.subtask
                                 bug:     bap.simplebts.issue.type.bug
+                workflowStepLabel:
+                    type: entity
+                    data_name: issue.workflowStep
+                    options:
+                        field_type: oro_workflow_step_select
+                        field_options:
+                            workflow_entity_class: BAP\SimpleBTSBundle\Entity\Issue
                 priorityName:
                     type: entity
                     data_name: issue.priority
@@ -116,6 +132,28 @@ datagrid:
                         field_options:
                             class: BAPSimpleBTSBundle:IssueResolution
                             property: name
+                reporterName:
+                    type: entity
+                    data_name: issue.reporter
+                    options:
+                        field_options:
+                            class: OroUserBundle:User
+                            property: username
+                assigneeName:
+                    type: entity
+                    data_name: issue.assignee
+                    options:
+                        field_options:
+                            class: OroUserBundle:User
+                            property: username
+                issueCollaborators:
+                    label: bap.simplebts.issue.collaborators.label
+                    type: choice
+                    data_name: issueCollaborators.id
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @bap_bts.provider.issues_grid_helper->getUsersChoices
                 createdAt:
                     type: datetime
                     data_name: issue.createdAt
@@ -142,3 +180,101 @@ datagrid:
                 link:          delete_link
                 icon:          trash
                 acl_resource:  bap_bts.issue_delete
+
+    issue-subtasks-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - parentIssue.id = :parentIssueId
+            bind_parameters:
+                - parentIssueId
+
+    user-issues-grid-widget:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issueCollaborators.id = :userId
+                        - workflowStep.name <> 'resolved'
+                        - workflowStep.name <> 'closed'
+            bind_parameters:
+                - userId
+        options:
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+        actions: ~
+
+    # todo: for issues on the user view page
+    user-issues-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    or:
+                        - reporter.id = :userId
+                        - assignee.id = :userId
+            bind_parameters:
+                - userId
+
+    issue-collaborators-grid:
+        source:
+            acl_resource: bap_bts.issue_view
+            type: orm
+            query:
+                select:
+                    - collaborator.id
+                    - collaborator.username
+                    - collaborator.email
+                    - collaborator.firstName
+                    - collaborator.lastName
+                from:
+                    - { table: BAPSimpleBTSBundle:Issue, alias: issue }
+                join:
+                    inner:
+                        - { join: issue.collaborators, alias: collaborator }
+                where:
+                    and:
+                        - issue.id = :issueId
+            bind_parameters:
+                - issueId
+        columns:
+            username:
+                label: oro.user.username.label
+            email:
+                label: oro.user.email.label
+            firstName:
+                label: oro.user.first_name.label
+            lastName:
+                label: oro.user.last_name.label
+        properties:
+            id: ~
+        sorters:
+            columns:
+                username:
+                    data_name: collaborator.username
+                email:
+                    data_name: collaborator.email
+                firstName:
+                    data_name: collaborator.firstName
+                lastName:
+                    data_name: collaborator.lastName
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: collaborator.username
+                email:
+                    type: string
+                    data_name: collaborator.email
+                firstName:
+                    type: string
+                    data_name: collaborator.firstName
+                lastName:
+                    type: string
+                    data_name: collaborator.lastName

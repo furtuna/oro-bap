@@ -47,6 +47,9 @@ class BAPSimpleBTSBundle implements Migration
         $table->addColumn('type', 'string', ['length' => 50]);
         $table->addColumn('createdAt', 'datetime', []);
         $table->addColumn('updatedAt', 'datetime', []);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
+
         $table->setPrimaryKey(['id']);
         $table->addIndex(['reporter_id'], 'IDX_48518651E1CFE6F5', []);
         $table->addIndex(['organization_id'], 'bts_issue_organization_idx', []);
@@ -56,6 +59,8 @@ class BAPSimpleBTSBundle implements Migration
         $table->addIndex(['createdAt'], 'bts_issue_created_at_idx', []);
         $table->addIndex(['summary'], 'bts_issue_summary_idx', []);
         $table->addUniqueIndex(['code'], 'bts_issue_code_idx');
+        $table->addUniqueIndex(['workflow_item_id'], 'bts_issue_workflow_item_idx');
+        $table->addIndex(['workflow_step_id'], 'bts_issue_workflow_step_idx', []);
     }
 
     /**
@@ -119,6 +124,18 @@ class BAPSimpleBTSBundle implements Migration
             ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
         );
     }
 
